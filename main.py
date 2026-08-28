@@ -120,19 +120,34 @@ def imposta_nome_asta(dati: NomeAsta):
 
 @app.get("/api/esporta_csv")
 def esporta_csv(db: Session = Depends(get_db)):
-    giocatori_assegnati = db.query(Giocatore).filter(Giocatore.squadra_id != None).all()
+    squadre = db.query(Squadra).all()
     output = io.StringIO()
-    writer = csv.writer(output, delimiter=",")
-    writer.writerow(["Squadra", "Nome", "Squadra_Appartenenza", "Ruolo", "Ruoli_Mantra", "Prezzo", "Quotazione", "Quotazione_Mantra", "Fantacalcio_Id"])
-    for g in giocatori_assegnati:
-        sq = db.query(Squadra).filter(Squadra.id == g.squadra_id).first()
-        writer.writerow([
-            sq.nome if sq else "Sconosciuta", g.nome, g.squadra_serie_a, g.ruolo, g.ruoli_mantra,
-            g.costo, g.quotazione, g.quotazione_mantra, g.fantacalcio_id or str(g.id)
-        ])
+    
+    for sq in squadre:
+        # Delimitatore iniziale di blocco squadra richiesto da Leghe FC
+        output.write("$,$,$\n")
+        
+        giocatori = db.query(Giocatore).filter(Giocatore.squadra_id == sq.id).all()
+        for g in giocatori:
+            # Rimuove eventuali virgole dal nome squadra per non corrompere la formattazione CSV
+            nome_sq = str(sq.nome).replace(",", "")
+            
+            # Leghe FC richiede rigorosamente l'ID ufficiale del giocatore
+            fanta_id = g.fantacalcio_id if g.fantacalcio_id else str(g.id)
+            costo = g.costo if g.costo is not None else 1
+            
+            output.write(f"{nome_sq},{fanta_id},{costo}\n")
+            
+    # Delimitatore finale di chiusura file
+    output.write("$,$,$\n")
     output.seek(0)
-    return StreamingResponse(output, media_type="text/csv", headers={"Content-Disposition": "attachment; filename=rose_leghe_fantacalcio.csv"})
-
+    
+    return StreamingResponse(
+        output, 
+        media_type="text/csv", 
+        headers={"Content-Disposition": "attachment; filename=rose_leghe_fantacalcio.csv"}
+    )
+    
 @app.get("/api/lista_giocatori")
 def lista_giocatori(db: Session = Depends(get_db)):
     giocatori = db.query(Giocatore).all()

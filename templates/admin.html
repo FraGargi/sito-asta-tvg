@@ -12,6 +12,7 @@
 </head>
 <body class="bg-gray-950 text-white min-h-screen p-4 select-none font-sans">
 
+    <!-- TOP HEADER NAVBAR -->
     <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 mb-4 flex flex-wrap justify-between items-center gap-4 shadow-xl">
         <div class="flex items-center gap-3">
             <span class="text-3xl">🎛️</span>
@@ -22,6 +23,7 @@
         </div>
 
         <div class="flex flex-wrap items-center gap-2">
+            <!-- Cambio Titolo Asta -->
             <input type="text" id="input-nome-asta" placeholder="Nome Asta (es. LEGA FANTACALCIO)" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold text-white w-48">
             <button onclick="salvaNomeAsta()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">💾 Salva Titolo</button>
 
@@ -31,8 +33,10 @@
         </div>
     </div>
 
+    <!-- MAIN GRID CONTAINER -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
+        <!-- COLONNA 1: CONTROLLO ASTA LIVE & RILANCI REGIA -->
         <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl">
             <h2 class="text-base font-black text-amber-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
                 🔴 Controllo Asta in Corso
@@ -50,6 +54,7 @@
                         <div class="text-[11px] text-yellow-300 mt-1" id="admin-live-fvm"></div>
                     </div>
 
+                    <!-- PREZZO E TIMER LIVE -->
                     <div class="grid grid-cols-2 gap-2 text-center">
                         <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
                             <div class="text-[10px] text-gray-400 uppercase font-bold">Offerta Corrente</div>
@@ -62,6 +67,7 @@
                         </div>
                     </div>
 
+                    <!-- ⚡ SEZIONE RILANCIO DA REGIA ADMIN -->
                     <div class="bg-gray-950 p-3 rounded-xl border border-amber-600 space-y-2">
                         <div class="text-xs font-bold text-amber-400 uppercase">⚡ Rilancio Rapido da Regia</div>
                         
@@ -74,22 +80,26 @@
                             </select>
                         </div>
 
+                        <!-- Incrementi -->
                         <div class="grid grid-cols-3 gap-1.5">
                             <button onclick="setAdminIncremento(1)" id="btn-admin-inc-1" class="bg-blue-600 text-white font-black py-1 rounded-xl text-xs border-2 border-blue-400 shadow"> +1 CR </button>
                             <button onclick="setAdminIncremento(5)" id="btn-admin-inc-5" class="bg-gray-800 text-gray-300 font-black py-1 rounded-xl text-xs border border-gray-700 shadow"> +5 CR </button>
                             <button onclick="setAdminIncremento(10)" id="btn-admin-inc-10" class="bg-gray-800 text-gray-300 font-black py-1 rounded-xl text-xs border border-gray-700 shadow"> +10 CR </button>
                         </div>
 
+                        <!-- Bottone Rilancio Regia -->
                         <button onclick="adminRilancia()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:scale-95 transition-all text-black font-black text-sm py-2.5 rounded-xl shadow-lg uppercase tracking-wider">
                             🚀 RILANCIA DA REGIA (<span id="txt-admin-incremento">+1</span>)
                         </button>
                     </div>
 
+                    <!-- PULSANTI DI CONTROLLO TIMER E PREZZO MANUALE -->
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="resetTimer()" class="bg-indigo-900 hover:bg-indigo-800 text-indigo-200 text-xs font-bold py-2 rounded-xl border border-indigo-700">⏱️ +10s Timer</button>
                         <button onclick="impostaPrezzoManuale()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold py-2 rounded-xl border border-gray-700">✏️ Forza Prezzo</button>
                     </div>
 
+                    <!-- MODULO ASSEGNAZIONE GIOCATORE -->
                     <div class="bg-gray-950 p-3 rounded-xl border border-emerald-800 space-y-2">
                         <div class="text-xs font-bold text-emerald-400 uppercase">Aggiudica / Assegna Giocatore</div>
                         <div class="grid grid-cols-2 gap-2">
@@ -112,11 +122,13 @@
             </div>
         </div>
 
+        <!-- COLONNA 2: LANCIO E PESCA GIOCATORI LIBERI -->
         <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl">
             <h2 class="text-base font-black text-blue-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
                 🎯 Chiama Giocatore in Asta
             </h2>
 
+            <!-- Pesca Casuale -->
             <div class="space-y-1.5">
                 <div class="text-xs font-bold text-gray-400 uppercase">🎲 Pesca Casuale a Sorte</div>
                 <div class="grid grid-cols-5 gap-1.5">
@@ -128,22 +140,45 @@
                 </div>
             </div>
 
+            <!-- Selezione Diretta Listone -->
             <div class="space-y-2 flex-1 flex flex-col min-h-0">
-                <div class="text-xs font-bold text-gray-400 uppercase">🔍 Cerca e Chiama dal Listone</div>
+                <div class="flex justify-between items-center">
+                    <div class="text-xs font-bold text-gray-400 uppercase">🔍 Cerca e Chiama dal Listone</div>
+                    <!-- MENU ORDINAMENTO -->
+                    <select id="select-ordinamento-admin" onchange="cambiaOrdinamentoAdmin()" class="bg-gray-800 border border-gray-700 text-white text-[10px] rounded px-2 py-1 font-bold outline-none cursor-pointer">
+                        <option value="fvm_desc">FVM (Più costosi)</option>
+                        <option value="fvm_asc">FVM (Più economici)</option>
+                        <option value="alfa_asc">Alfabetico (A - Z)</option>
+                        <option value="alfa_desc">Alfabetico (Z - A)</option>
+                    </select>
+                </div>
+                
+                <!-- FILTRO RUOLO ADMIN -->
+                <div class="grid grid-cols-5 gap-1 mb-1">
+                    <button onclick="impostaFiltroAdminRuolo('')" id="adm-ruolo-tutti" class="bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase shadow">Tutti</button>
+                    <button onclick="impostaFiltroAdminRuolo('P')" id="adm-ruolo-P" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow">P</button>
+                    <button onclick="impostaFiltroAdminRuolo('D')" id="adm-ruolo-D" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow">D</button>
+                    <button onclick="impostaFiltroAdminRuolo('C')" id="adm-ruolo-C" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow">C</button>
+                    <button onclick="impostaFiltroAdminRuolo('A')" id="adm-ruolo-A" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow">A</button>
+                </div>
+
                 <input type="text" id="input-ricerca-admin" oninput="renderListoneAdmin()" placeholder="Cerca giocatore libero..." class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-xs font-bold text-white">
                 
                 <div id="container-listone-admin" class="flex-1 overflow-y-auto custom-scrollbar space-y-1 pr-1 max-h-96">
-                    </div>
+                    <!-- Popolato via JS -->
+                </div>
             </div>
         </div>
 
+        <!-- COLONNA 3: MODIFICA MANUALE ROSE E BUDGET SQUADRE -->
         <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl lg:col-span-1">
             <h2 class="text-base font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
                 🛡️ Rose, Spesa e Modifica Crediti
             </h2>
 
             <div id="container-squadre-admin" class="space-y-3 overflow-y-auto custom-scrollbar max-h-[75vh] pr-1">
-                </div>
+                <!-- Popolato via JS -->
+            </div>
         </div>
 
     </div>
@@ -152,6 +187,17 @@
         let listoneCache = [];
         let squadreCache = [];
         let adminIncrementoScelto = 1;
+        let adminFiltroRuolo = '';
+        let adminOrdinamento = 'fvm_desc'; // Stato iniziale ordinamento
+
+        function getColorRuolo(ruolo) {
+            const r = (ruolo || '').trim().toUpperCase();
+            if(r === 'P') return 'text-yellow-400'; 
+            if(r === 'D') return 'text-green-400';
+            if(r === 'C') return 'text-blue-400'; 
+            if(r === 'A') return 'text-red-400';
+            return 'text-white';
+        }
 
         async function caricaDatiIniziali() {
             await scaricaListone();
@@ -165,6 +211,24 @@
                 listoneCache = await res.json();
                 renderListoneAdmin();
             } catch(e){}
+        }
+
+        function cambiaOrdinamentoAdmin() {
+            adminOrdinamento = document.getElementById('select-ordinamento-admin').value;
+            renderListoneAdmin();
+        }
+
+        function impostaFiltroAdminRuolo(ruolo) {
+            adminFiltroRuolo = ruolo;
+            ['', 'P', 'D', 'C', 'A'].forEach(r => {
+                const btn = document.getElementById(`adm-ruolo-${r === '' ? 'tutti' : r}`);
+                if (r === ruolo) {
+                    btn.className = "bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase shadow";
+                } else {
+                    btn.className = "bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow";
+                }
+            });
+            renderListoneAdmin();
         }
 
         function setAdminIncremento(val) {
@@ -198,21 +262,38 @@
             const query = document.getElementById('input-ricerca-admin').value.toLowerCase();
             const container = document.getElementById('container-listone-admin');
 
-            const liberi = listoneCache.filter(g => !g.squadra_proprietaria && (g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query)));
+            // Filtro per ruolo, ricerca testo e svincolati
+            let liberi = listoneCache.filter(g => 
+                !g.squadra_proprietaria && 
+                (adminFiltroRuolo === '' || g.ruolo === adminFiltroRuolo) &&
+                (g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query))
+            );
+
+            // Applica l'ordinamento dinamico in base alla selezione
+            liberi.sort((a, b) => {
+                if (adminOrdinamento === 'fvm_desc' || adminOrdinamento === 'fvm_asc') {
+                    const fvmA = parseFloat(String(a.fvm).replace(',', '.')) || 0;
+                    const fvmB = parseFloat(String(b.fvm).replace(',', '.')) || 0;
+                    return adminOrdinamento === 'fvm_desc' ? fvmB - fvmA : fvmA - fvmB;
+                } else {
+                    return adminOrdinamento === 'alfa_asc' ? a.nome.localeCompare(b.nome) : b.nome.localeCompare(a.nome);
+                }
+            });
 
             if (liberi.length === 0) {
                 container.innerHTML = '<div class="text-xs text-gray-500 italic text-center py-4">Nessun giocatore trovato</div>';
                 return;
             }
 
-            container.innerHTML = liberi.slice(0, 50).map(g => `
+            container.innerHTML = liberi.slice(0, 100).map(g => `
                 <div class="bg-gray-950 p-2 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
                     <div>
-                        <span class="font-black text-yellow-400">[${g.ruolo}]</span>
+                        <span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span>
                         <span class="font-bold text-white ml-1">${g.nome}</span>
                         <span class="text-[10px] text-gray-400 ml-1">(${g.squadra_serie_a})</span>
+                        <div class="text-[10px] text-yellow-300 font-bold mt-0.5">FVM: ${g.fvm}</div>
                     </div>
-                    <button onclick="avviaAstaGiocatore(${g.id})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase">
+                    <button onclick="avviaAstaGiocatore(${g.id})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2.5 py-1.5 rounded-lg text-[10px] uppercase shadow">
                         🚀 Metti in Asta
                     </button>
                 </div>
@@ -336,7 +417,7 @@
                     boxInattivo.classList.add('hidden');
                     boxAttivo.classList.remove('hidden');
 
-                    document.getElementById('admin-live-ruolo-nome').innerHTML = `[${asta.ruolo}] ${asta.nome}`;
+                    document.getElementById('admin-live-ruolo-nome').innerHTML = `<span class="${getColorRuolo(asta.ruolo)}">[${asta.ruolo}]</span> ${asta.nome}`;
                     document.getElementById('admin-live-squadra-seriea').innerText = asta.squadra_serie_a;
                     document.getElementById('admin-live-fvm').innerText = `FVM: ${asta.fvm}`;
                     document.getElementById('admin-live-prezzo').innerText = `${asta.prezzo} cr.`;
@@ -363,7 +444,7 @@
                 containerSquadre.innerHTML = squadreCache.map(s => {
                     const rosaHtml = s.rosa.map(g => `
                         <div class="flex justify-between items-center text-xs bg-gray-900 p-1.5 rounded border border-gray-800">
-                            <div><span class="font-black text-yellow-400">[${g.ruolo}]</span> <span class="text-white font-bold">${g.nome}</span></div>
+                            <div><span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> <span class="text-white font-bold">${g.nome}</span></div>
                             <div class="flex items-center gap-2">
                                 <span class="text-green-400 font-mono font-bold">${g.costo} cr</span>
                                 <button onclick="svincolaGiocatore(${g.id})" class="text-red-400 hover:text-red-300 font-bold text-xs px-1" title="Svincola Giocatore">❌</button>
@@ -380,6 +461,7 @@
                                 </div>
                             </div>
 
+                            <!-- Modifica Crediti / Budget Iniziale -->
                             <div class="flex items-center justify-between gap-2 bg-gray-900 p-1.5 rounded-lg border border-gray-800 text-xs">
                                 <span class="text-gray-400">Budget Iniziale:</span>
                                 <div class="flex gap-1">
@@ -388,6 +470,7 @@
                                 </div>
                             </div>
 
+                            <!-- Giocatori in Rosa -->
                             <div class="max-h-36 overflow-y-auto custom-scrollbar space-y-1 pr-1">
                                 ${rosaHtml || '<div class="text-[11px] text-gray-500 italic text-center py-2">Nessun giocatore in rosa</div>'}
                             </div>
