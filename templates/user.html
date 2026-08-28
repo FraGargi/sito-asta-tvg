@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pannello Partecipante - Asta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4B5563; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col justify-between p-4 select-none">
+    
+    <div id="modal-team" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-6">
+        <div class="bg-gray-900 border border-blue-600 rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl">
+            <h2 class="text-xl font-black text-blue-400 mb-2">CHI SEI?</h2>
+            <p class="text-xs text-gray-400 mb-4">Seleziona la tua squadra per partecipare all'asta dai tuoi dispositivi.</p>
+            <select id="select-team" class="w-full bg-gray-800 border border-gray-700 text-white p-3 rounded-xl mb-4 font-bold text-center">
+                {% for s in squadre %}
+                <option value="{{ s.id }}">{{ s.nome }}</option>
+                {% endfor %}
+            </select>
+            <button onclick="confermaSquadra()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl uppercase tracking-wider shadow-lg">Entra in Asta</button>
+        </div>
+    </div>
+
+    <div id="modal-catalogo" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
+        <div class="bg-gray-900 border border-blue-600 rounded-2xl p-4 flex flex-col max-h-[92vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
+            
+            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
+                <div class="flex gap-2">
+                    <button onclick="cambiaTabCatalogo('giocatori')" id="tab-btn-giocatori" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow">📚 Giocatori</button>
+                    <button onclick="cambiaTabCatalogo('squadre')" id="tab-btn-squadre" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400">🏟️ Squadre Serie A</button>
+                </div>
+                <button onclick="toggleModalCatalogo()" class="text-gray-400 font-bold text-base px-2">✕</button>
+            </div>
+            
+            <div id="tab-content-giocatori" class="flex flex-col flex-1 overflow-hidden space-y-2">
+                <div class="grid grid-cols-5 gap-1">
+                    <button onclick="impostaFiltroCatalogoRuolo('')" id="cat-ruolo-tutti" class="bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase">Tutti</button>
+                    <button onclick="impostaFiltroCatalogoRuolo('P')" id="cat-ruolo-P" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">P</button>
+                    <button onclick="impostaFiltroCatalogoRuolo('D')" id="cat-ruolo-D" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">D</button>
+                    <button onclick="impostaFiltroCatalogoRuolo('C')" id="cat-ruolo-C" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">C</button>
+                    <button onclick="impostaFiltroCatalogoRuolo('A')" id="cat-ruolo-A" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">A</button>
+                </div>
+                <input type="text" id="input-ricerca-catalogo" oninput="renderCatalogoGiocatori()" placeholder="Cerca nome o squadra..." class="w-full bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white">
+                <div id="lista-catalogo-container" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar"></div>
+            </div>
+
+            <div id="tab-content-squadre" class="hidden flex flex-col flex-1 overflow-hidden space-y-2">
+                <input type="text" id="input-ricerca-squadre" oninput="renderCatalogoSquadre()" placeholder="Cerca squadra di Serie A..." class="w-full bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white">
+                <div id="lista-squadre-container" class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODALE SCHEDA SQUADRA SERIE A -->
+    <div id="modal-dettaglio-squadra" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
+        <div class="bg-gray-900 border border-indigo-600 rounded-2xl p-4 flex flex-col max-h-[90vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
+            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
+                <h3 id="dettaglio-sq-titolo" class="font-black text-indigo-400 text-sm uppercase">🏟️ Scheda Squadra</h3>
+                <button onclick="chiudiDettaglioSquadra()" class="text-gray-400 font-bold text-base px-2">✕</button>
+            </div>
+            <div id="dettaglio-sq-contenuto" class="space-y-3 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs"></div>
+        </div>
+    </div>
+
+    <div id="modal-dettaglio-giocatore" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
+        <div class="bg-gray-900 border border-cyan-600 rounded-2xl p-4 flex flex-col max-h-[85vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
+            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
+                <h3 class="font-black text-cyan-400 text-sm uppercase">🔍 Scheda Scouting</h3>
+                <button onclick="chiudiDettaglioGiocatore()" class="text-gray-400 font-bold text-base px-2">✕</button>
+            </div>
+            <div id="dettaglio-contenuto" class="space-y-3 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs"></div>
+        </div>
+    </div>
+
+    <!-- HEADER INTERFACCIA -->
+    <div class="flex justify-between items-center bg-gray-900 border border-gray-800 p-3 rounded-2xl mb-3">
+        <div>
+            <div class="text-[10px] text-gray-400 uppercase font-bold">La tua Squadra</div>
+            <div id="user-team-name" class="text-sm font-black text-blue-400">---</div>
+        </div>
+        <div class="flex gap-1.5">
+            <button onclick="toggleModalCatalogo()" class="text-[10px] bg-indigo-900 hover:bg-indigo-800 px-2.5 py-1 rounded-lg text-white font-bold border border-indigo-700">📚 Lista</button>
+            <button onclick="cambiaSquadra()" class="text-[10px] bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded-lg text-gray-300 font-bold border border-gray-700">Cambia</button>
+        </div>
+    </div>
+
+    <!-- CONTENUTO PRINCIPALE -->
+    <div class="flex flex-col gap-3 flex-1 overflow-hidden">
+        
+        <div id="contenuto-asta" class="flex flex-col items-center text-center">
+            <div id="stato-attesa" class="space-y-2 py-4">
+                <div class="text-3xl animate-bounce">⏳</div>
+                <div class="text-sm font-bold text-gray-400">In attesa che l'Admin metta un giocatore all'asta...</div>
+            </div>
+
+            <div id="box-giocatore-attivo" class="hidden w-full max-w-md space-y-2.5">
+                <div class="bg-gray-900 border-2 border-blue-600 rounded-2xl p-3 shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-2 right-3 text-xs font-mono font-bold text-yellow-400 bg-yellow-950 px-2 py-0.5 rounded" id="user-fvm">FVM: 0</div>
+                    <div id="user-ruolo-nome" class="text-2xl font-black uppercase tracking-wide mb-0.5"></div>
+                    <div id="user-squadra-seriea" class="text-[11px] font-bold text-blue-400 uppercase tracking-widest mb-1"></div>
+                    <div class="bg-gray-950 border border-emerald-800 rounded-xl p-1.5 mb-1.5 text-center">
+                        <div id="user-ruolo-spec" class="text-[10px] font-bold text-cyan-300 uppercase mb-0.5"></div>
+                        <div id="user-formazione" class="text-[11px] font-black text-amber-300"></div>
+                        <div id="user-ballottaggio-live"></div>
+                    </div>
+                    <div class="text-[11px] text-gray-300 italic bg-gray-950 p-2 rounded-xl border border-gray-800 text-left">
+                        📝 <span id="user-descrizione"></span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-center">
+                        <div class="text-[9px] text-gray-400 uppercase font-bold">Prezzo Attuale</div>
+                        <div id="user-prezzo" class="text-2xl font-black text-green-400 font-mono">1 cr.</div>
+                    </div>
+                    <div class="bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-center">
+                        <div class="text-[9px] text-gray-400 uppercase font-bold">Timer</div>
+                        <div id="user-timer" class="text-2xl font-black text-red-500 font-mono">00:10</div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-900 border border-amber-600 rounded-xl p-2">
+                    <div class="text-[9px] font-bold text-amber-400 uppercase mb-1">⚡ Ultimi Rilanci</div>
+                    <div id="user-feed-rilanci" class="space-y-1 text-xs max-h-16 overflow-y-auto custom-scrollbar"></div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-1.5">
+                    <button onclick="setIncremento(1)" id="btn-inc-1" class="bg-blue-600 text-white font-black py-1.5 rounded-xl text-xs border-2 border-blue-400 shadow"> +1 CR </button>
+                    <button onclick="setIncremento(5)" id="btn-inc-5" class="bg-gray-800 text-gray-300 font-black py-1.5 rounded-xl text-xs border border-gray-700 shadow"> +5 CR </button>
+                    <button onclick="setIncremento(10)" id="btn-inc-10" class="bg-gray-800 text-gray-300 font-black py-1.5 rounded-xl text-xs border border-gray-700 shadow"> +10 CR </button>
+                </div>
+
+                <!-- IL BOTTONE MAESTRO - DIVENTA GRIGIO E SI BLOCCA IN AUTOMATICO -->
+                <button id="btn-rilancio-master" onclick="rilancia()" class="w-full bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-500 hover:to-emerald-400 active:scale-95 transition-all text-black font-black text-xl py-3 rounded-xl shadow-xl uppercase tracking-wider flex items-center justify-center gap-2">
+                    🚀 RILANCIA (<span id="txt-incremento">+1</span>)
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-3 flex flex-col space-y-2 flex-1 shadow-xl">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-1.5">
+                <h3 class="font-black text-blue-400 text-xs uppercase">🛡️ La Mia Rosa & Budget</h3>
+                <div class="flex gap-2 text-[10px] font-mono">
+                    <span class="text-green-400 font-bold">Crediti: <strong id="user-crediti">--</strong></span>
+                    <span class="text-red-400 font-bold">Max: <strong id="user-offerta-max">--</strong></span>
+                </div>
+            </div>
+
+            <div id="user-stats-ruoli" class="grid grid-cols-4 gap-1.5"></div>
+
+            <div class="flex-1 overflow-y-auto max-h-36 custom-scrollbar bg-gray-950 p-2 rounded-xl border border-gray-800 space-y-1" id="user-lista-rosa">
+                <div class="text-[11px] text-gray-500 italic text-center py-3">Nessun giocatore in rosa</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let myTeamId = localStorage.getItem('fanta_team_id');
+        let myTeamName = localStorage.getItem('fanta_team_name');
+        let countdownInterval;
+        let incrementoScelto = 1;
+        let catalogoGiocatoriCache = [];
+        let infoSquadreCache = {};
+        let filtroCatalogoRuolo = '';
+        let laMiaSquadraData = null; // Manteniamo in cache i dati della nostra squadra
+
+        function getColorRuolo(ruolo) {
+            if(ruolo === 'P') return 'text-yellow-400'; 
+            if(ruolo === 'D') return 'text-green-400';
+            if(ruolo === 'C') return 'text-blue-400'; 
+            if(ruolo === 'A') return 'text-red-400';
+            return 'text-white';
+        }
+
+        if (myTeamId && myTeamName) {
+            document.getElementById('modal-team').classList.add('hidden');
+            document.getElementById('user-team-name').innerText = myTeamName;
+        }
+
+        function confermaSquadra() {
+            const select = document.getElementById('select-team');
+            myTeamId = select.value;
+            myTeamName = select.options[select.selectedIndex].text;
+            localStorage.setItem('fanta_team_id', myTeamId);
+            localStorage.setItem('fanta_team_name', myTeamName);
+            document.getElementById('modal-team').classList.add('hidden');
+            document.getElementById('user-team-name').innerText = myTeamName;
+        }
+
+        function cambiaSquadra() {
+            localStorage.removeItem('fanta_team_id');
+            localStorage.removeItem('fanta_team_name');
+            location.reload();
+        }
+
+        function setIncremento(val) {
+            incrementoScelto = val;
+            [1, 5, 10].forEach(v => {
+                const btn = document.getElementById(`btn-inc-${v}`);
+                if (v === val) btn.className = "bg-blue-600 text-white font-black py-1.5 rounded-xl text-xs border-2 border-blue-400 shadow";
+                else btn.className = "bg-gray-800 text-gray-300 font-black py-1.5 rounded-xl text-xs border border-gray-700 shadow";
+            });
+        }
+        
+        function toggleModalCatalogo() {
+            const modal = document.getElementById('modal-catalogo');
+            modal.classList.toggle('hidden');
+            if (!modal.classList.contains('hidden')) { scaricaCatalogo(); }
+        }
+
+        function cambiaTabCatalogo(tab) {
+            const btnGiocatori = document.getElementById('tab-btn-giocatori');
+            const btnSquadre = document.getElementById('tab-btn-squadre');
+            const contentGiocatori = document.getElementById('tab-content-giocatori');
+            const contentSquadre = document.getElementById('tab-content-squadre');
+
+            if (tab === 'giocatori') {
+                btnGiocatori.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow";
+                btnSquadre.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400";
+                contentGiocatori.classList.remove('hidden');
+                contentSquadre.classList.add('hidden');
+            } else {
+                btnSquadre.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow";
+                btnGiocatori.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400";
+                contentSquadre.classList.remove('hidden');
+                contentGiocatori.classList.add('hidden');
+                renderCatalogoSquadre();
+            }
+        }
+
+        function impostaFiltroCatalogoRuolo(ruolo) {
+            filtroCatalogoRuolo = ruolo;
+            ['', 'P', 'D', 'C', 'A'].forEach(r => {
+                const btn = document.getElementById(`cat-ruolo-${r === '' ? 'tutti' : r}`);
+                if (r === ruolo) btn.className = "bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase shadow";
+                else btn.className = "bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow";
+            });
+            renderCatalogoGiocatori();
+        }
+
+        async function scaricaCatalogo() {
+            try {
+                const resG = await fetch('/api/lista_giocatori');
+                catalogoGiocatoriCache = await resG.json();
+                catalogoGiocatoriCache.sort((a, b) => a.nome.localeCompare(b.nome));
+                const resS = await fetch('/api/info_squadre_serie_a');
+                infoSquadreCache = await resS.json();
+                renderCatalogoGiocatori();
+            } catch (e) {}
+        }
+
+        function renderCatalogoGiocatori() {
+            const query = document.getElementById('input-ricerca-catalogo').value.toLowerCase();
+            const container = document.getElementById('lista-catalogo-container');
+
+            const filtrati = catalogoGiocatoriCache.filter(g => {
+                const matchRuolo = (filtroCatalogoRuolo === '' || g.ruolo === filtroCatalogoRuolo);
+                const matchQuery = g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query);
+                return matchRuolo && matchQuery;
+            });
+
+            if (filtrati.length === 0) {
+                container.innerHTML = '<div class="text-xs text-gray-500 text-center py-6 italic">Nessun giocatore trovato</div>';
+                return;
+            }
+
+            container.innerHTML = filtrati.map(g => {
+                const asisBadge = g.squadra_proprietaria 
+                    ? `<span class="text-[10px] bg-red-950 text-red-300 px-2 py-0.5 rounded font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` 
+                    : `<span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded font-bold">SVINCOLATO (FVM: ${g.fvm})</span>`;
+                
+                return `
+                    <div onclick="apriDettaglioGiocatore(${g.id})" class="bg-gray-950 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs cursor-pointer hover:bg-gray-900 transition-colors">
+                        <div>
+                            <span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> 
+                            <span class="font-bold text-white ml-1">${g.nome}</span>
+                            <div class="text-[10px] text-gray-400 mt-0.5">${g.squadra_serie_a} - Titolarità: ${g.titolarita || '-'}</div>
+                        </div>
+                        <div>${asisBadge}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderCatalogoSquadre() {
+            const query = document.getElementById('input-ricerca-squadre').value.toLowerCase();
+            const container = document.getElementById('lista-squadre-container');
+            const squadreMap = {};
+            catalogoGiocatoriCache.forEach(g => {
+                const sq = g.squadra_serie_a || "Sconosciuta";
+                if (!squadreMap[sq]) squadreMap[sq] = [];
+                squadreMap[sq].push(g);
+            });
+            const squadreNomi = Object.keys(squadreMap).sort().filter(sq => sq.toLowerCase().includes(query));
+
+            if (squadreNomi.length === 0) {
+                container.innerHTML = '<div class="text-xs text-gray-500 text-center py-6 italic">Nessuna squadra trovata</div>';
+                return;
+            }
+
+            container.innerHTML = squadreNomi.map(sq => {
+                const infoSq = infoSquadreCache[sq] || {};
+                return `
+                    <div onclick="apriDettaglioSquadra('${sq}')" class="bg-gray-950 border border-gray-800 rounded-xl p-3 flex justify-between items-center cursor-pointer hover:bg-gray-900 transition-colors">
+                        <div>
+                            <h4 class="font-black text-blue-400 text-sm uppercase">🏟️ ${sq}</h4>
+                            <div class="text-[11px] text-gray-400 mt-0.5">Modulo: <strong class="text-amber-300">${infoSq.modulo || '-'}</strong></div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[10px] bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-lg font-bold">Visualizza Tattica ➔</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function apriDettaglioSquadra(nomeSquadra) {
+            const info = infoSquadreCache[nomeSquadra] || { modulo: '-', formazione_tipo: '-', rigoristi: '-', piazzati: '-', ballottaggi: '-' };
+            const giocatoriSq = catalogoGiocatoriCache.filter(g => g.squadra_serie_a === nomeSquadra);
+            giocatoriSq.sort((a, b) => b.fvm - a.fvm);
+
+            const giocatoriHtml = giocatoriSq.map(g => {
+                const stato = g.squadra_proprietaria ? `<span class="text-red-400 font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` : `<span class="text-green-400">Svincolato</span>`;
+                return `
+                    <div onclick="apriDettaglioGiocatore(${g.id})" class="flex justify-between items-center py-1.5 border-b border-gray-900 text-xs cursor-pointer hover:bg-gray-900 px-1 rounded">
+                        <div><span class="${getColorRuolo(g.ruolo)} font-black">[${g.ruolo}]</span> <span class="text-white font-bold ml-1">${g.nome}</span> <span class="text-[10px] text-yellow-400 ml-1">(${g.titolarita || '-'})</span></div>
+                        <div class="text-[10px]">FVM: ${g.fvm} | ${stato}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('dettaglio-sq-titolo').innerText = `🏟️ ${nomeSquadra}`;
+            document.getElementById('dettaglio-sq-contenuto').innerHTML = `
+                <div class="bg-gray-950 p-3 rounded-xl border border-gray-800 space-y-3">
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[9px] text-gray-400 uppercase font-bold">Modulo</div>
+                            <div class="text-sm font-black text-amber-300">${info.modulo}</div>
+                        </div>
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[9px] text-gray-400 uppercase font-bold">Rigoristi</div>
+                            <div class="text-xs font-bold text-yellow-400">${info.rigoristi}</div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
+                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Formazione Tipo (11 Titolare)</div>
+                        <div class="text-xs font-bold text-cyan-300">${info.formazione_tipo}</div>
+                    </div>
+                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
+                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Battitori Piazzati (Punizioni / Angoli)</div>
+                        <div class="text-xs font-bold text-blue-300">${info.piazzati}</div>
+                    </div>
+                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
+                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Ballottaggi Chiave</div>
+                        <div class="text-xs font-bold text-rose-300">${info.ballottaggi}</div>
+                    </div>
+                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800 space-y-1">
+                        <div class="text-[10px] font-black text-indigo-400 uppercase mb-1">Rosa Completa (${giocatoriSq.length} Giocatori)</div>
+                        <div class="max-h-48 overflow-y-auto custom-scrollbar space-y-0.5 pr-1">
+                            ${giocatoriHtml}
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-dettaglio-squadra').classList.remove('hidden');
+        }
+
+        function chiudiDettaglioSquadra() {
+            document.getElementById('modal-dettaglio-squadra').classList.add('hidden');
+        }
+
+        function apriDettaglioGiocatore(id) {
+            const g = catalogoGiocatoriCache.find(x => x.id === id);
+            if (!g) return;
+
+            let compagniBallottaggio = "";
+            const infoSq = infoSquadreCache[g.squadra_serie_a] || {};
+            if (infoSq.ballottaggi && infoSq.ballottaggi !== '-') {
+                const ballots = infoSq.ballottaggi.split('|');
+                const cognome = g.nome.trim().split(' ')[0].toUpperCase();
+                const match = ballots.find(b => b.toUpperCase().includes(cognome) || b.toUpperCase().includes(g.nome.toUpperCase()));
+                if (match) compagniBallottaggio = match.trim();
+            }
+
+            const asisBadge = g.squadra_proprietaria 
+                ? `<span class="bg-red-950 text-red-300 px-2 py-1 rounded font-bold">Acquistato da: ${g.squadra_proprietaria} (${g.costo} cr.)</span>` 
+                : `<span class="bg-emerald-950 text-emerald-300 px-2 py-1 rounded font-bold">Disponibile (FVM: ${g.fvm})</span>`;
+
+            const container = document.getElementById('dettaglio-contenuto');
+            container.innerHTML = `
+                <div class="bg-gray-950 p-3 rounded-xl border border-gray-800 space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-2xl font-black"><span class="${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> ${g.nome}</div>
+                            <div class="text-xs text-blue-400 font-bold uppercase tracking-widest mt-0.5">${g.squadra_serie_a}</div>
+                        </div>
+                        <div>${asisBadge}</div>
+                    </div>
+
+                    <div class="bg-gray-900 p-2.5 rounded-lg border border-emerald-800 text-center">
+                        <div class="text-[10px] font-bold text-cyan-300 uppercase mb-0.5">Gerarchia e Stato</div>
+                        <div class="text-xs font-black text-amber-300">${g.formazione || '-'}</div>
+                        ${compagniBallottaggio ? `<div class="mt-1.5 text-[11px] text-rose-300 font-bold bg-gray-950 p-1.5 rounded border border-rose-900 shadow-inner">🔄 Concorrenza: ${compagniBallottaggio}</div>` : ''}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold">Quotazione Iniziale</div>
+                            <div class="text-sm font-bold text-white">${g.quotazione} cr.</div>
+                        </div>
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold">Ruolo Specifico</div>
+                            <div class="text-sm font-bold text-cyan-400">${g.dettaglio_ruolo || '-'}</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[9px] text-gray-400 uppercase">Titolarità</div>
+                            <div class="text-xs font-bold text-yellow-400">${g.titolarita}</div>
+                        </div>
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[9px] text-gray-400 uppercase">Affidabilità</div>
+                            <div class="text-xs font-bold text-blue-300">${g.affidabilita}</div>
+                        </div>
+                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
+                            <div class="text-[9px] text-gray-400 uppercase">Integrità</div>
+                            <div class="text-xs font-bold text-red-300">${g.integrita}</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-2.5 rounded-lg border border-gray-800 italic text-gray-200 text-[11px]">
+                        📝 ${g.descrizione && g.descrizione !== '-' ? g.descrizione : 'Nessuna nota di scouting disponibile.'}
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-dettaglio-giocatore').classList.remove('hidden');
+        }
+
+        function chiudiDettaglioGiocatore() {
+            document.getElementById('modal-dettaglio-giocatore').classList.add('hidden');
+        }
+
+        async function rilancia() {
+            if (!myTeamId) { alert("Seleziona prima la tua squadra!"); return; }
+            try {
+                const res = await fetch('/api/rilancia', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ squadra_id: parseInt(myTeamId), incremento: incrementoScelto })
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    alert("Errore: " + (data.detail || "Rilancio rifiutato"));
+                }
+            } catch (e) {}
+        }
+
+        async function aggiornaStatoUtente() {
+            try {
+                const resLive = await fetch('/api/live');
+                const asta = await resLive.json();
+                const attesaEl = document.getElementById('stato-attesa');
+                const boxAttivoEl = document.getElementById('box-giocatore-attivo');
+                const btnRilancio = document.getElementById('btn-rilancio-master');
+
+                if (myTeamId) {
+                    const resSquadre = await fetch('/api/stato_squadre');
+                    const squadre = await resSquadre.json();
+                    laMiaSquadraData = squadre.find(s => s.nome === myTeamName);
+                    
+                    if (laMiaSquadraData) {
+                        document.getElementById('user-crediti').innerText = `${laMiaSquadraData.crediti_residui} cr`;
+                        document.getElementById('user-offerta-max').innerText = `${laMiaSquadraData.offerta_max} cr`;
+
+                        const statsHTML = ['P', 'D', 'C', 'A'].map(r => `
+                            <div class="text-center bg-gray-950 rounded p-1 border border-gray-800">
+                                <div class="text-[10px] font-bold ${getColorRuolo(r)}">${r}: ${laMiaSquadraData.stats_ruoli[r].count}/${laMiaSquadraData.stats_ruoli[r].max}</div>
+                                <div class="text-[9px] text-gray-400">${laMiaSquadraData.stats_ruoli[r].perc}%</div>
+                            </div>
+                        `).join('');
+                        document.getElementById('user-stats-ruoli').innerHTML = statsHTML;
+
+                        const giocatoriHtml = laMiaSquadraData.rosa.map(g => `
+                            <div class="flex justify-between text-xs border-b border-gray-900 py-1 px-1">
+                                <span class="font-medium ${getColorRuolo(g.ruolo)} truncate pr-1">[${g.ruolo}] <span class="text-gray-200">${g.nome}</span></span>
+                                <span class="text-green-400 font-bold shrink-0 font-mono">${g.costo} cr</span>
+                            </div>
+                        `).join('');
+                        document.getElementById('user-lista-rosa').innerHTML = giocatoriHtml || '<div class="text-[11px] text-gray-500 italic text-center py-3">Nessun giocatore in rosa</div>';
+                    }
+                }
+
+                if (asta.attiva) {
+                    attesaEl.classList.add('hidden');
+                    boxAttivoEl.classList.remove('hidden');
+
+                    document.getElementById('user-ruolo-nome').innerHTML = `<span class="${getColorRuolo(asta.ruolo)}">[${asta.ruolo}]</span> ${asta.nome}`;
+                    document.getElementById('user-squadra-seriea').innerText = asta.squadra_serie_a;
+                    document.getElementById('user-prezzo').innerText = `${asta.prezzo} cr.`;
+                    document.getElementById('user-fvm').innerText = `FVM: ${asta.fvm}`;
+                    document.getElementById('user-descrizione').innerText = asta.descrizione && asta.descrizione !== '-' ? asta.descrizione : 'Nessuna nota.';
+                    document.getElementById('user-ruolo-spec').innerText = asta.dettaglio_ruolo && asta.dettaglio_ruolo !== '-' ? `Ruolo: ${asta.dettaglio_ruolo}` : '';
+                    document.getElementById('user-formazione').innerText = asta.formazione && asta.formazione !== '-' ? asta.formazione : '';
+
+                    let compagniBallottaggio = "";
+                    const infoSq = infoSquadreCache[asta.squadra_serie_a] || {};
+                    if (infoSq.ballottaggi && infoSq.ballottaggi !== '-') {
+                        const ballots = infoSq.ballottaggi.split('|');
+                        const cognome = asta.nome.trim().split(' ')[0].toUpperCase();
+                        const match = ballots.find(b => b.toUpperCase().includes(cognome) || b.toUpperCase().includes(asta.nome.toUpperCase()));
+                        if (match) compagniBallottaggio = match.trim();
+                    }
+                    document.getElementById('user-ballottaggio-live').innerHTML = compagniBallottaggio ? `<div class="mt-1.5 text-[10px] text-rose-300 font-bold bg-gray-900 p-1.5 rounded border border-rose-900">🔄 Concorrenza: ${compagniBallottaggio}</div>` : '';
+
+                    const feedEl = document.getElementById('user-feed-rilanci');
+                    if (asta.ultimi_rilanci && asta.ultimi_rilanci.length > 0) {
+                        feedEl.innerHTML = asta.ultimi_rilanci.map(r => `
+                            <div class="bg-gray-950 px-2 py-0.5 rounded border border-gray-800 flex justify-between items-center text-[11px]">
+                                <span class="text-blue-300 font-bold truncate">${r.squadra}</span>
+                                <span class="text-green-400 font-mono font-bold">${r.prezzo} cr.</span>
+                            </div>
+                        `).join('');
+                    } else { feedEl.innerHTML = '<div class="text-gray-500 italic text-center py-1">Nessun rilancio</div>'; }
+
+                    // CONTROLLI DI SICUREZZA PER IL BOTTONE (RUOLO E BUDGET)
+                    let slotPieni = false;
+                    let creditiInsufficienti = false;
+                    
+                    if (laMiaSquadraData) {
+                        const r = asta.ruolo;
+                        if (laMiaSquadraData.stats_ruoli[r] && laMiaSquadraData.stats_ruoli[r].count >= laMiaSquadraData.stats_ruoli[r].max) {
+                            slotPieni = true;
+                        }
+                        if ((asta.prezzo + incrementoScelto) > laMiaSquadraData.offerta_max) {
+                            creditiInsufficienti = true;
+                        }
+                    }
+
+                    clearInterval(countdownInterval);
+                    if (asta.fine_timer > 0) {
+                        countdownInterval = setInterval(() => {
+                            const rimanenti = asta.fine_timer - Math.floor(Date.now() / 1000);
+                            const timerEl = document.getElementById('user-timer');
+                            
+                            if (rimanenti > 0) {
+                                timerEl.innerText = `00:${rimanenti < 10 ? '0' : ''}${rimanenti}`;
+                                
+                                if (slotPieni) {
+                                    btnRilancio.disabled = true;
+                                    btnRilancio.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+                                    btnRilancio.innerHTML = `🚫 RUOLO ${asta.ruolo} PIENO`;
+                                } else if (creditiInsufficienti) {
+                                    btnRilancio.disabled = true;
+                                    btnRilancio.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+                                    btnRilancio.innerHTML = `🚫 CREDITI INSUFF.`;
+                                } else {
+                                    btnRilancio.disabled = false;
+                                    btnRilancio.classList.remove('opacity-50', 'grayscale', 'cursor-not-allowed');
+                                    btnRilancio.innerHTML = `🚀 RILANCIA (<span id="txt-incremento">+${incrementoScelto}</span>)`;
+                                }
+                            } else { 
+                                timerEl.innerText = "TEMPO SCADUTO!"; 
+                                btnRilancio.disabled = true;
+                                btnRilancio.classList.add('opacity-50', 'grayscale', 'cursor-not-allowed');
+                                btnRilancio.innerHTML = `🛑 ASTA CHIUSA`;
+                            }
+                        }, 200);
+                    }
+                } else {
+                    attesaEl.classList.remove('hidden');
+                    boxAttivoEl.classList.add('hidden');
+                }
+            } catch (e) {}
+        }
+
+        setInterval(aggiornaStatoUtente, 1000);
+        aggiornaStatoUtente();
+    </script>
+</body>
+</html>

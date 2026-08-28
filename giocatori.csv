@@ -1,0 +1,518 @@
+Fantacalcio_Id;Nome;Ruolo;Ruoli_Mantra;Squadra_Appartenenza;Quotazione;Quotazione_Mantra;FVM;Media;Fantamedia;Titolarita;Affidabilita;Integrita;Rigori;Piazzati;Formazione;Dettaglio_Ruolo;Descrizione
+5841;Svilar;P;Por;Roma;18;18;75;-;-;-;-;-;-;-;Riserva;-;-
+5116;Martinez Jo.;P;Por;Inter;17;17;63;-;-;-;-;-;-;-;Riserva;-;-
+4431;Carnesecchi;P;Por;Atalanta;16;16;52;-;-;-;-;-;-;-;Riserva;-;-
+6966;Butez;P;Por;Como;16;16;54;-;-;-;-;-;-;-;Riserva;-;-
+4964;Vicario;P;Por;Juventus;16;16;58;-;-;-;-;-;-;-;Riserva;-;-
+4312;Maignan;P;Por;Milan;15;15;50;-;-;-;-;-;-;-;Riserva;-;-
+2521;De Gea;P;Por;Fiorentina;12;12;40;-;-;-;-;-;-;-;Riserva;-;-
+572;Meret;P;Por;Napoli;11;11;53;-;-;-;-;-;-;-;Riserva;-;-
+133;Skorupski;P;Por;Bologna;10;10;36;-;-;-;-;-;-;-;Riserva;-;-
+4360;Caprile;P;Por;Cagliari;10;10;28;-;-;-;-;-;-;-;Riserva;-;-
+6482;Mandas;P;Por;Lazio;10;10;32;-;-;-;-;-;-;-;Riserva;-;-
+2134;Falcone;P;Por;Lecce;9;9;30;-;-;-;-;-;-;-;Riserva;-;-
+6462;Okoye;P;Por;Udinese;9;9;29;-;-;-;-;-;-;-;Riserva;-;-
+7332;Bijlow;P;Por;Genoa;8;8;17;-;-;-;-;-;-;-;Riserva;-;-
+7411;Daffara;P;Por;Parma;7;7;10;-;-;-;-;-;-;-;Riserva;-;-
+4236;Muric;P;Por;Sassuolo;7;7;15;-;-;-;-;-;-;-;Riserva;-;-
+6248;Stankovic F.;P;Por;Venezia;6;6;12;-;-;-;-;-;-;-;Riserva;-;-
+6415;Palmisani;P;Por;Frosinone;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+4485;Thiam;P;Por;Monza;5;5;11;-;-;-;-;-;-;-;Riserva;-;-
+2170;Milinkovic-Savic V.;P;Por;Napoli;5;5;7;-;-;-;-;-;-;-;Riserva;-;-
+7463;Desplanches;P;Por;Frosinone;2;2;3;-;-;-;-;-;-;-;Riserva;-;-
+2814;Provedel;P;Por;Inter;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+4;Sportiello;P;Por;Atalanta;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7533;Happonen;P;Por;Bologna;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7172;Pessina Mas.;P;Por;Bologna;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6650;Sherri;P;Por;Cagliari;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7301;Tornqvist;P;Por;Como;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+2809;Vigorito;P;Por;Como;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6403;Christensen O.;P;Por;Fiorentina;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+158;Lezzerini;P;Por;Fiorentina;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7466;Lolic;P;Por;Frosinone;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+219;Sommariva;P;Por;Genoa;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6569;Stolz;P;Por;Genoa;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+1926;Di Gennaro;P;Por;Inter;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+1930;Pinsoglio;P;Por;Juventus;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7337;Motta;P;Por;Lazio;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7534;Renzetti;P;Por;Lazio;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+2815;Terracciano;P;Por;Milan;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6813;Torriani;P;Por;Milan;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6682;Pizzignacco;P;Por;Monza;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7475;Strajnar;P;Por;Monza;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+2845;Contini;P;Por;Napoli;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6662;Corvi;P;Por;Parma;1;1;10;-;-;-;-;-;-;-;Riserva;-;-
+7048;De Marzi;P;Por;Roma;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+610;Gollini;P;Por;Roma;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+4518;Russo A.;P;Por;Sassuolo;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+4867;Turati;P;Por;Sassuolo;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7457;Mascardi;P;Por;Torino;1;1;13;-;-;-;-;-;-;-;Riserva;-;-
+5320;Paleari;P;Por;Torino;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7363;Siviero;P;Por;Torino;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+543;Padelli;P;Por;Udinese;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+5707;Piana;P;Por;Udinese;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6671;Grandi;P;Por;Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7531;Pozzi;P;Por;Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7545;Vismara;P;Por;Atalanta;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+2127;Satalino;P;Por;Sassuolo;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7557;Penev;P;Por;Lecce;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7560;Pisseri;P;Por;Frosinone;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+3;Radunovic;P;Por;Cagliari;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+4957;Montipò;P;Por;Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+4468;Bleve;P;Por;Lecce;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7603;Grabara;P;Por;Juventus;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+254;Dimarco;D;"E;W";Inter;31;30;253;-;-;-;-;-;-;-;Riserva;-;-
+4998;Molina N.;D;E;Roma;18;18;80;-;-;-;-;-;-;-;Riserva;-;-
+7181;Wesley;D;E;Roma;17;16;82;-;-;-;-;-;-;-;Riserva;-;-
+4159;Akanji;D;Dc;Inter;16;16;51;-;-;-;-;-;-;-;Riserva;-;-
+2788;Bremer;D;Dc;Juventus;16;16;60;-;-;-;-;-;-;-;Riserva;-;-
+2296;Mancini;D;Dc;Roma;15;15;49;-;-;-;-;-;-;-;Riserva;-;-
+2120;Bastoni;D;Dc;Inter;14;14;43;-;-;-;-;-;-;-;Riserva;-;-
+5022;Pavlovic;D;Dc;Milan;14;14;48;-;-;-;-;-;-;-;Riserva;-;-
+4409;Rrahmani;D;Dc;Napoli;14;14;51;-;-;-;-;-;-;-;Riserva;-;-
+4976;Kalulu;D;"Dd;Dc";Juventus;13;14;46;-;-;-;-;-;-;-;Riserva;-;-
+4317;N'Dicka;D;Dc;Roma;13;13;44;-;-;-;-;-;-;-;Riserva;-;-
+6956;Solet;D;Dc;Udinese;13;13;46;-;-;-;-;-;-;-;Riserva;-;-
+6217;Bisseck;D;Dc;Inter;12;12;37;-;-;-;-;-;-;-;Riserva;-;-
+2514;Stones;D;Dc;Inter;12;12;30;-;-;-;-;-;-;-;Riserva;-;-
+5833;Gila;D;Dc;Milan;12;12;31;-;-;-;-;-;-;-;Riserva;-;-
+2816;Di Lorenzo;D;"Dd;E";Napoli;12;12;40;-;-;-;-;-;-;-;Riserva;-;-
+5982;Spence;D;E;Inter;12;11;40;-;-;-;-;-;-;-;Riserva;-;-
+5750;Ostigard;D;Dc;Genoa;11;11;43;-;-;-;-;-;-;-;Riserva;-;-
+5526;Scalvini;D;Dc;Atalanta;10;10;28;-;-;-;-;-;-;-;Riserva;-;-
+6869;Ramon;D;Dc;Como;10;10;32;-;-;-;-;-;-;-;Riserva;-;-
+5885;Dodò;D;"Dd;E";Fiorentina;10;10;20;-;-;-;-;-;-;-;Riserva;-;-
+4807;Hermoso;D;Dc;Roma;10;10;26;-;-;-;-;-;-;-;Riserva;-;-
+5514;Vasquez;D;"Ds;Dc";Genoa;9;10;32;-;-;-;-;-;-;-;Riserva;-;-
+5520;Cambiaso;D;"Dd;Ds;E";Juventus;9;10;25;-;-;-;-;-;-;-;Riserva;-;-
+6989;Tiago Gabriel;D;Dc;Lecce;9;9;20;-;-;-;-;-;-;-;Riserva;-;-
+5641;Chalobah T.;D;"Dd;Dc";Como;9;10;30;-;-;-;-;-;-;-;Riserva;-;-
+6046;Hien;D;Dc;Atalanta;8;8;11;-;-;-;-;-;-;-;Riserva;-;-
+554;Zappacosta;D;"Dd;E";Atalanta;8;8;19;-;-;-;-;-;-;-;Riserva;-;-
+6042;Lucumì;D;Dc;Juventus;8;8;18;-;-;-;-;-;-;-;Riserva;-;-
+4734;Miranda J.;D;"Ds;E";Bologna;8;8;24;-;-;-;-;-;-;-;Riserva;-;-
+4210;Mina;D;Dc;Cagliari;8;8;20;-;-;-;-;-;-;-;Riserva;-;-
+6531;Jimenez A.;D;"Dd;Ds;E";Fiorentina;8;9;23;-;-;-;-;-;-;-;Riserva;-;-
+6814;Norton-Cuffy;D;"Dd;E";Genoa;8;8;21;-;-;-;-;-;-;-;Riserva;-;-
+4657;Celik;D;"B;Dd;E";Juventus;8;9;15;-;-;-;-;-;-;-;Riserva;-;-
+6320;Doekhi;D;Dc;Lazio;8;8;16;-;-;-;-;-;-;-;Riserva;-;-
+6496;Bartesaghi;D;"Ds;E";Milan;8;8;22;-;-;-;-;-;-;-;Riserva;-;-
+1852;Spinazzola;D;"Ds;E";Napoli;8;8;25;-;-;-;-;-;-;-;Riserva;-;-
+6664;Delprato;D;"B;Dd;E";Parma;8;8;21;-;-;-;-;-;-;-;Riserva;-;-
+5862;Valeri;D;"Ds;E";Parma;8;8;24;-;-;-;-;-;-;-;Riserva;-;-
+7529;Koulierakis;D;Dc;Roma;8;8;17;-;-;-;-;-;-;-;Riserva;-;-
+4994;Vojvoda;D;"Dd;E";Udinese;8;8;19;-;-;-;-;-;-;-;Riserva;-;-
+5555;Kamara H.;D;"Ds;E";Udinese;8;8;12;-;-;-;-;-;-;-;Riserva;-;-
+6727;Couto;D;"Dd;E";Como;8;8;26;-;-;-;-;-;-;-;Riserva;-;-
+5701;Obert;D;"B;Ds;E";Cagliari;7;7;15;-;-;-;-;-;-;-;Riserva;-;-
+7414;Kaiki;D;"Ds;E";Como;7;7;16;-;-;-;-;-;-;-;Riserva;-;-
+5365;Dragusin;D;Dc;Fiorentina;7;7;27;-;-;-;-;-;-;-;Riserva;-;-
+5877;Carlos Augusto;D;"B;Ds;E";Inter;7;8;25;-;-;-;-;-;-;-;Riserva;-;-
+460;Romagnoli;D;Dc;Lazio;7;7;22;-;-;-;-;-;-;-;Riserva;-;-
+4401;Gabbia;D;Dc;Milan;7;7;24;-;-;-;-;-;-;-;Riserva;-;-
+4751;Tomori;D;Dc;Milan;7;7;8;-;-;-;-;-;-;-;Riserva;-;-
+2724;Buongiorno;D;Dc;Napoli;7;7;15;-;-;-;-;-;-;-;Riserva;-;-
+6672;Idzes;D;Dc;Sassuolo;7;7;19;-;-;-;-;-;-;-;Riserva;-;-
+6642;Coco;D;Dc;Torino;7;7;14;-;-;-;-;-;-;-;Riserva;-;-
+5010;Ismajli;D;Dc;Torino;7;7;13;-;-;-;-;-;-;-;Riserva;-;-
+6485;Kristensen T.;D;"Dd;Dc";Atalanta;7;8;20;-;-;-;-;-;-;-;Riserva;-;-
+4664;Badiashile;D;Dc;Napoli;7;7;21;-;-;-;-;-;-;-;Riserva;-;-
+7580;Sutalo J.;D;Dc;Lazio;7;7;19;-;-;-;-;-;-;-;Riserva;-;-
+6916;Ahanor;D;"B;Ds;E";Atalanta;6;7;14;-;-;-;-;-;-;-;Riserva;-;-
+4887;Bellanova;D;"Dd;E";Atalanta;6;6;17;-;-;-;-;-;-;-;Riserva;-;-
+7219;Bernasconi;D;"Ds;E";Atalanta;6;6;18;-;-;-;-;-;-;-;Riserva;-;-
+7212;Heggem;D;"Ds;Dc";Bologna;6;7;15;-;-;-;-;-;-;-;Riserva;-;-
+4433;Zortea;D;"Dd;E";Bologna;6;6;19;-;-;-;-;-;-;-;Riserva;-;-
+6867;Valle;D;"Ds;E";Como;6;6;21;-;-;-;-;-;-;-;Riserva;-;-
+7294;Valdepenas;D;"Ds;Dc";Fiorentina;6;7;18;-;-;-;-;-;-;-;Riserva;-;-
+7410;Viery;D;"Ds;Dc";Fiorentina;6;7;17;-;-;-;-;-;-;-;Riserva;-;-
+4952;Monterisi;D;Dc;Frosinone;6;6;13;-;-;-;-;-;-;-;Riserva;-;-
+6660;Marcandalli;D;Dc;Genoa;6;6;14;-;-;-;-;-;-;-;Riserva;-;-
+4177;Pavard;D;"Dd;Dc";Inter;6;7;14;-;-;-;-;-;-;-;Riserva;-;-
+5620;Tavares N.;D;"Ds;E";Lazio;6;6;12;-;-;-;-;-;-;-;Riserva;-;-
+2188;Marusic;D;"Dd;Ds;E";Lazio;6;6;20;-;-;-;-;-;-;-;Riserva;-;-
+6632;Gaspar K.;D;Dc;Lecce;6;6;12;-;-;-;-;-;-;-;Riserva;-;-
+6990;Veiga D.;D;"Dd;E";Lecce;6;6;12;-;-;-;-;-;-;-;Riserva;-;-
+4502;Gallo;D;"Ds;E";Lecce;6;6;13;-;-;-;-;-;-;-;Riserva;-;-
+7485;Mangas;D;"Ds;E";Monza;6;6;15;-;-;-;-;-;-;-;Riserva;-;-
+6202;Beukema;D;Dc;Napoli;6;6;12;-;-;-;-;-;-;-;Riserva;-;-
+6495;Comuzzo;D;Dc;Torino;6;6;13;-;-;-;-;-;-;-;Riserva;-;-
+7253;Bella-Kotchap;D;Dc;Venezia;6;6;13;-;-;-;-;-;-;-;Riserva;-;-
+7329;Obrador;D;"Ds;E";Sassuolo;6;6;15;-;-;-;-;-;-;-;Riserva;-;-
+2640;Kolasinac;D;"Ds;Dc";Atalanta;5;6;8;-;-;-;-;-;-;-;Riserva;-;-
+7068;Vitik;D;Dc;Bologna;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+5678;Holm;D;"Dd;E";Bologna;5;5;13;-;-;-;-;-;-;-;Riserva;-;-
+7532;Kofler;D;Dc;Cagliari;5;5;8;-;-;-;-;-;-;-;Riserva;-;-
+7274;Zè Pedro;D;"Dd;Dc";Cagliari;5;6;13;-;-;-;-;-;-;-;Riserva;-;-
+6893;Kempf;D;Dc;Como;5;5;13;-;-;-;-;-;-;-;Riserva;-;-
+5449;Parisi;D;"Ds;E";Fiorentina;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+7469;Bracaglia;D;"Ds;Dc";Frosinone;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+6238;Oyono A.;D;"Dd;E";Frosinone;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+2593;Martin;D;"Ds;E";Genoa;5;5;8;-;-;-;-;-;-;-;Riserva;-;-
+6766;Kelly L.;D;"Ds;Dc";Juventus;5;6;12;-;-;-;-;-;-;-;Riserva;-;-
+4817;Pedraza;D;"Ds;E";Lazio;5;5;15;-;-;-;-;-;-;-;Riserva;-;-
+7240;Siebert;D;Dc;Lecce;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+5840;Olivera;D;"B;Ds;E";Napoli;5;6;13;-;-;-;-;-;-;-;Riserva;-;-
+6986;Rensch;D;"B;Dd;E";Roma;5;6;14;-;-;-;-;-;-;-;Riserva;-;-
+6426;Pedersen;D;"Dd;E";Torino;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+6890;Moreno M.;D;Dc;Venezia;5;5;6;-;-;-;-;-;-;-;Riserva;-;-
+4845;Correia T.;D;"Dd;E";Venezia;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+5695;Haps;D;"Ds;E";Venezia;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+7069;Fortini;D;E;Torino;5;4;12;-;-;-;-;-;-;-;Riserva;-;-
+7564;Leysen F.;D;"Ds;Dc";Sassuolo;5;6;12;-;-;-;-;-;-;-;Riserva;-;-
+7268;Rodriguez Ju.;D;"Ds;Dc";Cagliari;4;5;14;-;-;-;-;-;-;-;Riserva;-;-
+4461;Zappa;D;"B;Dd;E";Cagliari;4;4;7;-;-;-;-;-;-;-;Riserva;-;-
+7014;Smolcic I.;D;"Dd;E";Como;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+5603;Pongracic;D;Dc;Fiorentina;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7467;Calvani;D;Dc;Frosinone;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+7537;Mitaj;D;"Ds;E";Genoa;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+5831;Gatti;D;Dc;Juventus;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+5739;De Winter;D;"Dd;Dc";Milan;4;5;12;-;-;-;-;-;-;-;Riserva;-;-
+5273;Estupinan;D;"Ds;E";Milan;4;4;13;-;-;-;-;-;-;-;Riserva;-;-
+2115;Delli Carri;D;Dc;Monza;4;4;11;-;-;-;-;-;-;-;Riserva;-;-
+6659;Lucchesi;D;Dc;Monza;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+5838;Birindelli;D;"Dd;Ds;E";Monza;4;5;12;-;-;-;-;-;-;-;Riserva;-;-
+7235;Troilo;D;Dc;Parma;4;4;14;-;-;-;-;-;-;-;Riserva;-;-
+5307;Valenti;D;Dc;Parma;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+6631;Ghilardi;D;Dc;Roma;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+4374;Walukiewicz;D;"Dd;Dc";Sassuolo;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+5851;Doig;D;"Ds;E";Sassuolo;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+7526;Comert;D;Dc;Torino;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+4263;Kabasele;D;Dc;Udinese;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+5820;Bertola;D;"Dd;Ds;Dc";Udinese;4;6;10;-;-;-;-;-;-;-;Riserva;-;-
+5527;Zanoli;D;"Dd;E";Udinese;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+7312;Arizala;D;"Ds;E";Udinese;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7538;Halhal;D;Dc;Venezia;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+4375;Terzic;D;"Ds;E";Frosinone;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7563;Favasuli;D;"Dd;Ds;E";Napoli;4;5;11;-;-;-;-;-;-;-;Riserva;-;-
+5578;Kossounou;D;"Dd;Dc";Atalanta;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+5498;Casale;D;Dc;Bologna;3;3;5;-;-;-;-;-;-;-;Riserva;-;-
+7326;Helland;D;"Dd;Dc";Bologna;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+7125;Idrissi R.;D;"Ds;E";Cagliari;3;3;3;-;-;-;-;-;-;-;Riserva;-;-
+4378;Ranieri L.;D;"Ds;Dc";Fiorentina;3;3;10;-;-;-;-;-;-;-;Riserva;-;-
+7175;Joao Mario;D;"Dd;E";Fiorentina;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+7540;Akpoguma;D;Dc;Frosinone;3;3;6;-;-;-;-;-;-;-;Riserva;-;-
+5757;Cittadini;D;Dc;Frosinone;3;3;8;-;-;-;-;-;-;-;Riserva;-;-
+7012;Provstgaard;D;Dc;Lazio;3;3;14;-;-;-;-;-;-;-;Riserva;-;-
+7131;Floriani Mussolini;D;"Dd;E";Lazio;3;3;10;-;-;-;-;-;-;-;Riserva;-;-
+7238;Kouadio;D;"Dd;Dc";Monza;3;3;9;-;-;-;-;-;-;-;Riserva;-;-
+4925;Carboni A.;D;"Ds;Dc";Monza;3;4;9;-;-;-;-;-;-;-;Riserva;-;-
+7255;Britschgi;D;"Dd;Ds;E";Parma;3;4;10;-;-;-;-;-;-;-;Riserva;-;-
+6985;Candè;D;"Ds;Dc";Sassuolo;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+6925;Palma;D;Dc;Udinese;3;3;11;-;-;-;-;-;-;-;Riserva;-;-
+5994;Ebosse;D;"Ds;Dc";Udinese;3;3;5;-;-;-;-;-;-;-;Riserva;-;-
+6892;Schingtienne;D;Dc;Venezia;3;3;10;-;-;-;-;-;-;-;Riserva;-;-
+6673;Sverko;D;"Ds;Dc";Venezia;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+6821;Hainaut;D;"Dd;E";Venezia;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+7154;Odenthal;D;Dc;Sassuolo;3;3;8;-;-;-;-;-;-;-;Riserva;-;-
+7605;Tchato;D;"Dd;E";Frosinone;3;3;8;-;-;-;-;-;-;-;Riserva;-;-
+6601;Kambwala;D;"Dd;Dc";Como;3;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7483;Alhassane;D;"Ds;E";Bologna;2;2;6;-;-;-;-;-;-;-;Riserva;-;-
+6896;Van Der Brempt;D;"Dd;E";Como;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+6977;Otoa;D;Dc;Genoa;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+7413;Puczka;D;"Ds;E";Genoa;2;2;3;-;-;-;-;-;-;-;Riserva;-;-
+791;Sabelli;D;"Dd;Ds;E";Genoa;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+2263;Lazzari;D;"Dd;E";Lazio;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+2728;Pellegrini Lu.;D;"Ds;E";Lazio;2;2;7;-;-;-;-;-;-;-;Riserva;-;-
+6883;Jean;D;Dc;Lecce;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+7182;Ndaba;D;"Ds;E";Lecce;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+7525;Diawara S.;D;"Ds;Dc";Milan;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+7476;Bakoune;D;"Dd;E";Monza;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+6638;Marin R.;D;Dc;Napoli;2;2;8;-;-;-;-;-;-;-;Riserva;-;-
+7202;Ndiaye;D;Dc;Parma;2;2;8;-;-;-;-;-;-;-;Riserva;-;-
+252;Biraghi;D;"B;Ds;E";Torino;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+6021;Abankwah;D;"Dd;Dc";Udinese;2;2;10;-;-;-;-;-;-;-;Riserva;-;-
+7478;Franjic;D;"B;Ds;E";Venezia;2;2;7;-;-;-;-;-;-;-;Riserva;-;-
+6681;Sagrado;D;"Dd;E";Venezia;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+7548;Aurelio;D;"Ds;E";Cagliari;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+7573;Cinquegrano;D;"Dd;E";Sassuolo;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+5812;Terracciano F.;D;"B;Dd;Ds";Milan;2;3;4;-;-;-;-;-;-;-;Riserva;-;-
+487;De Silvestri;D;"Dd;E";Bologna;1;1;4;-;-;-;-;-;-;-;Riserva;-;-
+418;Goldaniga;D;Dc;Como;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+5424;Amey;D;Dc;Frosinone;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+294;Rugani;D;Dc;Juventus;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+6039;Cabal;D;"B;Ds;E";Juventus;1;1;4;-;-;-;-;-;-;-;Riserva;-;-
+327;Patric;D;"Dd;Dc";Lazio;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+5399;Antov;D;Dc;Monza;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+6809;Marianucci;D;Dc;Napoli;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+5481;Mazzocchi;D;"Dd;Ds;E";Napoli;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+6149;Carboni F.;D;"Ds;E";Parma;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7260;Ziolkowski;D;Dc;Roma;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+6189;Missori;D;"Dd;E";Sassuolo;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+7156;Pieragnolo;D;"Ds;E";Sassuolo;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7356;Mlacic;D;Dc;Udinese;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7454;Gomes;D;"Ds;Dc";Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7553;Omar Fayed;D;Dc;Frosinone;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7599;Lulli;D;E;Roma;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7604;Maye;D;"Ds;Dc";Monza;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6875;Paz N.;C;"T;A";Como;29;27;247;-;-;-;-;-;-;-;Riserva;-;-
+2194;Calhanoglu;C;"M;C";Inter;28;29;236;-;-;-;-;-;-;-;Riserva;-;-
+4777;McTominay;C;"C;T";Napoli;28;28;228;-;-;-;-;-;-;-;Riserva;-;-
+2167;Orsolini;C;"W;A";Bologna;25;24;192;-;-;-;-;-;-;-;Riserva;-;-
+2423;Pulisic;C;"T;A";Milan;24;22;160;-;-;-;-;-;-;-;Riserva;-;-
+2379;Rabiot;C;"C;T";Milan;23;23;145;-;-;-;-;-;-;-;Riserva;-;-
+7126;Baturina;C;T;Como;19;18;97;-;-;-;-;-;-;-;Riserva;-;-
+7556;Mora;C;T;Roma;19;18;95;-;-;-;-;-;-;-;Riserva;-;-
+5559;Da Cunha;C;"C;T";Como;18;18;87;-;-;-;-;-;-;-;Riserva;-;-
+2766;Zaniolo;C;"T;A";Udinese;18;17;85;-;-;-;-;-;-;-;Riserva;-;-
+1870;Barella;C;C;Inter;17;17;80;-;-;-;-;-;-;-;Riserva;-;-
+4973;McKennie;C;C;Juventus;17;17;70;-;-;-;-;-;-;-;Riserva;-;-
+6908;Atta;C;"C;T";Fiorentina;16;16;86;-;-;-;-;-;-;-;Riserva;-;-
+632;Zaccagni;C;"W;A";Lazio;16;15;88;-;-;-;-;-;-;-;Riserva;-;-
+2517;De Bruyne;C;T;Napoli;16;16;107;-;-;-;-;-;-;-;Riserva;-;-
+5800;Gudmundsson A.;C;"T;A";Fiorentina;13;12;40;-;-;-;-;-;-;-;Riserva;-;-
+7314;Taylor K.;C;"C;T";Lazio;13;13;57;-;-;-;-;-;-;-;Riserva;-;-
+5687;Vlasic;C;T;Torino;13;12;75;-;-;-;-;-;-;-;Riserva;-;-
+5792;Ederson D.S.;C;"M;C";Atalanta;12;13;49;-;-;-;-;-;-;-;Riserva;-;-
+5119;Samardzic;C;"C;T";Atalanta;12;12;41;-;-;-;-;-;-;-;Riserva;-;-
+7129;Rodriguez Je.;C;"W;A";Como;12;11;31;-;-;-;-;-;-;-;Riserva;-;-
+7436;Alajbegovic;C;"W;T";Juventus;12;12;50;-;-;-;-;-;-;-;Riserva;-;-
+6884;Conceicao;C;"W;A";Juventus;12;12;67;-;-;-;-;-;-;-;Riserva;-;-
+2606;Modric;C;"M;C";Milan;12;13;46;-;-;-;-;-;-;-;Riserva;-;-
+7078;Mastantuono;C;"W;T";Fiorentina;12;12;54;-;-;-;-;-;-;-;Riserva;-;-
+6372;Moreira;C;W;Milan;12;12;50;-;-;-;-;-;-;-;Riserva;-;-
+5172;Jones C.;C;C;Inter;12;12;48;-;-;-;-;-;-;-;Riserva;-;-
+6844;Rowe;C;"W;T";Bologna;11;11;44;-;-;-;-;-;-;-;Riserva;-;-
+5823;Baldanzi;C;T;Genoa;11;10;30;-;-;-;-;-;-;-;Riserva;-;-
+152;Zielinski;C;C;Inter;11;11;45;-;-;-;-;-;-;-;Riserva;-;-
+4220;Zambo Anguissa;C;C;Napoli;11;11;47;-;-;-;-;-;-;-;Riserva;-;-
+6684;Ekkelenkamp;C;"C;T";Udinese;11;11;45;-;-;-;-;-;-;-;Riserva;-;-
+6151;Perrone;C;"M;C";Como;10;11;37;-;-;-;-;-;-;-;Riserva;-;-
+5562;Thuram K.;C;C;Juventus;10;10;35;-;-;-;-;-;-;-;Riserva;-;-
+4892;Saelemaekers;C;"E;W";Milan;10;11;35;-;-;-;-;-;-;-;Riserva;-;-
+536;Politano;C;W;Napoli;10;9;40;-;-;-;-;-;-;-;Riserva;-;-
+7223;Vergara;C;"W;T";Napoli;10;10;40;-;-;-;-;-;-;-;Riserva;-;-
+5589;Konè M.;C;"M;C";Roma;10;11;42;-;-;-;-;-;-;-;Riserva;-;-
+5844;Thorstvedt;C;"C;T";Sassuolo;10;10;40;-;-;-;-;-;-;-;Riserva;-;-
+5888;Casadei;C;"C;T";Torino;10;10;32;-;-;-;-;-;-;-;Riserva;-;-
+530;Pellegrini Lo.;C;"C;T";Roma;10;10;25;-;-;-;-;-;-;-;Riserva;-;-
+2077;Pasalic;C;"C;T";Atalanta;9;9;24;-;-;-;-;-;-;-;Riserva;-;-
+184;Bernardeschi;C;"W;T";Bologna;9;9;30;-;-;-;-;-;-;-;Riserva;-;-
+1933;Mandragora;C;C;Fiorentina;9;9;23;-;-;-;-;-;-;-;Riserva;-;-
+6274;Diouf;C;"E;C";Inter;9;10;44;-;-;-;-;-;-;-;Riserva;-;-
+2848;Frattesi;C;"C;T";Lazio;9;9;68;-;-;-;-;-;-;-;Riserva;-;-
+5500;Cancellieri;C;"W;A";Lazio;9;8;28;-;-;-;-;-;-;-;Riserva;-;-
+6398;Isaksen;C;"W;A";Lazio;9;8;22;-;-;-;-;-;-;-;Riserva;-;-
+6717;Konè I.;C;C;Sassuolo;9;9;20;-;-;-;-;-;-;-;Riserva;-;-
+4364;Gaetano;C;"M;C";Atalanta;8;9;30;-;-;-;-;-;-;-;Riserva;-;-
+2765;Odgaard;C;T;Bologna;8;7;17;-;-;-;-;-;-;-;Riserva;-;-
+4436;Cambiaghi;C;"W;A";Bologna;8;7;21;-;-;-;-;-;-;-;Riserva;-;-
+4465;Fagioli;C;"M;C";Fiorentina;8;9;22;-;-;-;-;-;-;-;Riserva;-;-
+6294;Ndour;C;C;Fiorentina;8;8;25;-;-;-;-;-;-;-;Riserva;-;-
+7070;Sucic P.;C;C;Inter;8;8;21;-;-;-;-;-;-;-;Riserva;-;-
+827;Locatelli;C;"M;C";Juventus;8;9;33;-;-;-;-;-;-;-;Riserva;-;-
+5878;Colpani;C;T;Monza;8;7;25;-;-;-;-;-;-;-;Riserva;-;-
+4287;Lobotka;C;"M;C";Napoli;8;8;22;-;-;-;-;-;-;-;Riserva;-;-
+779;Cristante;C;"M;C";Roma;8;9;29;-;-;-;-;-;-;-;Riserva;-;-
+5735;Volpato;C;"W;T";Sassuolo;8;8;23;-;-;-;-;-;-;-;Riserva;-;-
+7551;Schmid;C;"W;T";Frosinone;8;8;28;-;-;-;-;-;-;-;Riserva;-;-
+5858;Ferguson;C;"M;C";Bologna;7;8;23;-;-;-;-;-;-;-;Riserva;-;-
+4870;Adopo;C;"M;C";Cagliari;7;8;13;-;-;-;-;-;-;-;Riserva;-;-
+7311;Romano;C;"M;C";Cagliari;7;8;20;-;-;-;-;-;-;-;Riserva;-;-
+6010;Fazzini;C;"C;T";Cagliari;7;8;24;-;-;-;-;-;-;-;Riserva;-;-
+7472;Calò;C;"M;C";Frosinone;7;8;25;-;-;-;-;-;-;-;Riserva;-;-
+5791;Frendrup;C;"M;C";Genoa;7;8;20;-;-;-;-;-;-;-;Riserva;-;-
+4459;Rovella;C;"M;C";Lazio;7;8;16;-;-;-;-;-;-;-;Riserva;-;-
+5504;Coulibaly L.;C;"M;C";Lecce;7;8;17;-;-;-;-;-;-;-;Riserva;-;-
+4856;Chukwueze;C;W;Milan;7;6;22;-;-;-;-;-;-;-;Riserva;-;-
+2741;Pessina;C;"M;C";Monza;7;8;15;-;-;-;-;-;-;-;Riserva;-;-
+6666;Bernabè;C;C;Parma;7;7;35;-;-;-;-;-;-;-;Riserva;-;-
+6190;Pisilli;C;C;Roma;7;7;17;-;-;-;-;-;-;-;Riserva;-;-
+6218;Oristanio;C;"W;T";Torino;7;7;12;-;-;-;-;-;-;-;Riserva;-;-
+6680;Karlstrom;C;"M;C";Udinese;7;8;20;-;-;-;-;-;-;-;Riserva;-;-
+6783;Unai Gomez;C;T;Udinese;7;6;17;-;-;-;-;-;-;-;Riserva;-;-
+5946;Sow;C;"M;C";Genoa;7;8;15;-;-;-;-;-;-;-;Riserva;-;-
+4479;Elmas;C;"W;T";Atalanta;7;7;28;-;-;-;-;-;-;-;Riserva;-;-
+5422;Zalewski;C;W;Atalanta;6;5;20;-;-;-;-;-;-;-;Riserva;-;-
+5298;Pobega;C;"M;C";Bologna;6;7;13;-;-;-;-;-;-;-;Riserva;-;-
+4260;Winks;C;"M;C";Cagliari;6;7;15;-;-;-;-;-;-;-;Riserva;-;-
+7412;Milla;C;"M;C";Como;6;6;20;-;-;-;-;-;-;-;Riserva;-;-
+5036;Caqueret;C;"C;T";Como;6;6;17;-;-;-;-;-;-;-;Riserva;-;-
+6678;Liberali;C;T;Como;6;5;21;-;-;-;-;-;-;-;Riserva;-;-
+7464;Oulai;C;"M;C";Fiorentina;6;7;20;-;-;-;-;-;-;-;Riserva;-;-
+6020;Ellertsson;C;"E;C";Genoa;6;7;18;-;-;-;-;-;-;-;Riserva;-;-
+5761;Zhegrova;C;W;Juventus;6;5;20;-;-;-;-;-;-;-;Riserva;-;-
+6549;Pierotti;C;W;Lecce;6;5;19;-;-;-;-;-;-;-;Riserva;-;-
+6593;Akinsanmiro;C;C;Monza;6;6;16;-;-;-;-;-;-;-;Riserva;-;-
+4349;Nicolussi Caviglia;C;"M;C";Parma;6;7;16;-;-;-;-;-;-;-;Riserva;-;-
+2528;Matic;C;"M;C";Sassuolo;6;7;15;-;-;-;-;-;-;-;Riserva;-;-
+6170;Gineitis;C;"M;C";Torino;6;7;12;-;-;-;-;-;-;-;Riserva;-;-
+5674;Basic;C;"M;C";Venezia;6;7;19;-;-;-;-;-;-;-;Riserva;-;-
+7146;Tourè I.;C;"E;M";Monza;6;8;15;-;-;-;-;-;-;-;Riserva;-;-
+7528;Amondarain;C;"M;C";Bologna;5;6;12;-;-;-;-;-;-;-;Riserva;-;-
+6640;Felici;C;W;Cagliari;5;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7127;Addai;C;"W;A";Como;5;4;10;-;-;-;-;-;-;-;Riserva;-;-
+5998;Zerbin;C;W;Frosinone;5;4;12;-;-;-;-;-;-;-;Riserva;-;-
+7341;Amorim;C;"M;C";Genoa;5;6;11;-;-;-;-;-;-;-;Riserva;-;-
+7409;Meichtry;C;"W;T";Genoa;5;5;11;-;-;-;-;-;-;-;Riserva;-;-
+2857;Traorè Hj.;C;"W;T";Genoa;5;5;11;-;-;-;-;-;-;-;Riserva;-;-
+2529;Mkhitaryan;C;C;Inter;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+5685;Koopmeiners;C;"C;T";Juventus;5;5;13;-;-;-;-;-;-;-;Riserva;-;-
+6629;Dele-Bashiru;C;"C;T";Lazio;5;5;13;-;-;-;-;-;-;-;Riserva;-;-
+6015;Berisha M.;C;"C;T";Lecce;5;5;12;-;-;-;-;-;-;-;Riserva;-;-
+7318;Gandelman;C;"C;T";Lecce;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+4686;Fofana Y.;C;"M;C";Milan;5;6;10;-;-;-;-;-;-;-;Riserva;-;-
+7203;Jashari;C;C;Milan;5;5;13;-;-;-;-;-;-;-;Riserva;-;-
+6898;Keita M.;C;"M;C";Parma;5;6;15;-;-;-;-;-;-;-;Riserva;-;-
+6677;Adzic;C;"C;T";Sassuolo;5;5;16;-;-;-;-;-;-;-;Riserva;-;-
+7036;Bakola;C;"C;T";Sassuolo;5;5;14;-;-;-;-;-;-;-;Riserva;-;-
+7060;Cacciamani;C;"E;W";Torino;5;6;20;-;-;-;-;-;-;-;Riserva;-;-
+6827;Njie;C;"W;A";Torino;5;4;14;-;-;-;-;-;-;-;Riserva;-;-
+7198;Piotrowski;C;"M;C";Udinese;5;6;15;-;-;-;-;-;-;-;Riserva;-;-
+5507;Busio;C;"M;C";Venezia;5;6;14;-;-;-;-;-;-;-;Riserva;-;-
+5319;Sohm;C;C;Venezia;5;5;11;-;-;-;-;-;-;-;Riserva;-;-
+6994;Perez K.;C;"C;T";Venezia;5;5;15;-;-;-;-;-;-;-;Riserva;-;-
+7550;Grillitsch;C;"M;C";Frosinone;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+6618;Cissè A.;C;"W;T";Milan;5;5;25;-;-;-;-;-;-;-;Riserva;-;-
+22;De Roon;C;"M;C";Atalanta;4;5;8;-;-;-;-;-;-;-;Riserva;-;-
+6054;Moro N.;C;"M;C";Bologna;4;4;14;-;-;-;-;-;-;-;Riserva;-;-
+6895;Dominguez B.;C;"W;A";Sassuolo;4;3;12;-;-;-;-;-;-;-;Riserva;-;-
+1871;Deiola;C;"M;C";Cagliari;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+6206;Fabbian;C;"C;T";Fiorentina;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+7473;Cichella;C;"M;C";Frosinone;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+7474;Koutsoupias;C;C;Frosinone;4;4;11;-;-;-;-;-;-;-;Riserva;-;-
+6506;Fini ;C;W;Frosinone;4;3;13;-;-;-;-;-;-;-;Riserva;-;-
+4970;Messias;C;"W;T";Genoa;4;4;8;-;-;-;-;-;-;-;Riserva;-;-
+5301;Luis Henrique;C;"E;W";Inter;4;5;12;-;-;-;-;-;-;-;Riserva;-;-
+4911;Douglas Luiz;C;C;Juventus;4;4;15;-;-;-;-;-;-;-;Riserva;-;-
+333;Cataldi;C;"M;C";Lazio;4;5;12;-;-;-;-;-;-;-;Riserva;-;-
+7322;Ngom;C;"M;C";Lecce;4;5;13;-;-;-;-;-;-;-;Riserva;-;-
+5453;Ricci S.;C;"M;C";Milan;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+4199;Loftus-Cheek;C;"C;T";Milan;4;4;18;-;-;-;-;-;-;-;Riserva;-;-
+6252;Folorunsho;C;"C;T";Napoli;4;4;5;-;-;-;-;-;-;-;Riserva;-;-
+6207;Almqvist;C;"W;A";Parma;4;4;11;-;-;-;-;-;-;-;Riserva;-;-
+7536;Diallo O.;C;"W;A";Parma;4;3;12;-;-;-;-;-;-;-;Riserva;-;-
+6271;El Aynaoui;C;"M;C";Roma;4;5;18;-;-;-;-;-;-;-;Riserva;-;-
+7535;Fitz-Jim;C;"M;C";Torino;4;5;18;-;-;-;-;-;-;-;Riserva;-;-
+6005;Ilkhan;C;"M;C";Torino;4;5;10;-;-;-;-;-;-;-;Riserva;-;-
+7208;Miller L.;C;"M;C";Udinese;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+6024;Sulemana I.;C;"M;C";Atalanta;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+4947;Brescianini;C;"C;T";Fiorentina;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+6241;Gelli F.;C;"C;T";Frosinone;3;3;8;-;-;-;-;-;-;-;Riserva;-;-
+6903;Hasa;C;"C;T";Frosinone;3;3;5;-;-;-;-;-;-;-;Riserva;-;-
+6917;Masini;C;"M;C";Frosinone;3;3;8;-;-;-;-;-;-;-;Riserva;-;-
+6503;Stankovic A.;C;"M;C";Inter;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+5813;Miretti;C;"C;T";Juventus;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+7248;Gorter;C;"M;C";Lecce;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+5457;Maleh;C;"M;C";Lecce;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+5295;Musah;C;"C;W";Milan;3;3;15;-;-;-;-;-;-;-;Riserva;-;-
+7477;Colombo L.;C;"M;C";Monza;3;3;7;-;-;-;-;-;-;-;Riserva;-;-
+5131;Gilmour;C;"M;C";Napoli;3;3;10;-;-;-;-;-;-;-;Riserva;-;-
+7138;Ordonez C.;C;"M;C";Parma;3;3;5;-;-;-;-;-;-;-;Riserva;-;-
+7209;Sorensen O.;C;C;Parma;3;3;12;-;-;-;-;-;-;-;Riserva;-;-
+7183;Aboukhlal;C;"W;A";Torino;3;2;5;-;-;-;-;-;-;-;Riserva;-;-
+5872;Helgason;C;"C;T";Venezia;3;3;3;-;-;-;-;-;-;-;Riserva;-;-
+6225;El Azzouzi O.;C;"M;C";Bologna;2;2;10;-;-;-;-;-;-;-;Riserva;-;-
+6815;Fadera;C;W;Cagliari;2;2;12;-;-;-;-;-;-;-;Riserva;-;-
+6980;Venturino;C;W;Genoa;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+5880;Ciurria;C;"E;W";Monza;2;2;6;-;-;-;-;-;-;-;Riserva;-;-
+6219;Boloca;C;"M;C";Sassuolo;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+6246;Lipani;C;"M;C";Sassuolo;2;2;5;-;-;-;-;-;-;-;Riserva;-;-
+7418;Chakvetadze;C;"W;T";Udinese;2;2;6;-;-;-;-;-;-;-;Riserva;-;-
+526;Duncan;C;C;Venezia;2;2;4;-;-;-;-;-;-;-;Riserva;-;-
+6592;Forson O.;C;"W;T";Monza;2;2;1;-;-;-;-;-;-;-;Riserva;-;-
+7165;Liteta;C;"M;C";Cagliari;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7357;Lahdo;C;"C;T";Como;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7456;El Azzouzi A.;C;"M;C";Frosinone;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+5725;Kone B.;C;C;Frosinone;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+6191;Belahyane;C;"M;C";Lazio;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7345;Przyborek;C;"W;T";Lazio;1;1;5;-;-;-;-;-;-;-;Riserva;-;-
+6410;Kaba;C;"M;C";Lecce;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+7319;Fofana Sa.;C;"M;C";Lecce;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7276;Cremaschi;C;"E;C";Parma;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7157;Iannoni;C;"M;C";Sassuolo;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+5007;Ilic;C;C;Lecce;1;1;8;-;-;-;-;-;-;-;Riserva;-;-
+6889;Anjorin;C;"C;T";Torino;1;1;4;-;-;-;-;-;-;-;Riserva;-;-
+6212;Zarraga;C;"M;C";Udinese;1;1;4;-;-;-;-;-;-;-;Riserva;-;-
+7481;Dagasso;C;C;Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7571;Laerke;C;"W;A";Lecce;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7572;Comotto;C;"M;C";Milan;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7574;Foe Ondoa;C;C;Monza;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+7575;Mout;C;C;Monza;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+5585;Malen;A;Pc;Roma;36;36;414;-;-;-;-;-;-;-;Riserva;-;-
+2764;Martinez L.;A;Pc;Inter;34;34;367;-;-;-;-;-;-;-;Riserva;-;-
+4871;Thuram;A;Pc;Inter;28;28;263;-;-;-;-;-;-;-;Riserva;-;-
+6397;Ramos G.;A;Pc;Milan;27;27;228;-;-;-;-;-;-;-;Riserva;-;-
+6052;Hojlund;A;Pc;Napoli;27;27;257;-;-;-;-;-;-;-;Riserva;-;-
+2097;Kean;A;Pc;Fiorentina;25;25;187;-;-;-;-;-;-;-;Riserva;-;-
+5951;Kolo Muani;A;Pc;Juventus;25;25;211;-;-;-;-;-;-;-;Riserva;-;-
+6434;Yildiz;A;A;Juventus;22;23;150;-;-;-;-;-;-;-;Riserva;-;-
+7017;Douvikas;A;Pc;Como;21;21;170;-;-;-;-;-;-;-;Riserva;-;-
+6435;Krstovic;A;Pc;Atalanta;19;18;100;-;-;-;-;-;-;-;Riserva;-;-
+2137;Scamacca;A;Pc;Atalanta;19;18;123;-;-;-;-;-;-;-;Riserva;-;-
+5637;Davis K.;A;Pc;Udinese;19;19;109;-;-;-;-;-;-;-;Riserva;-;-
+4510;Leao;A;A;Milan;18;19;75;-;-;-;-;-;-;-;Riserva;-;-
+531;Berardi;A;A;Sassuolo;18;19;101;-;-;-;-;-;-;-;Riserva;-;-
+5995;De Ketelaere;A;A;Atalanta;17;18;98;-;-;-;-;-;-;-;Riserva;-;-
+7071;Esposito F.P.;A;Pc;Inter;17;17;105;-;-;-;-;-;-;-;Riserva;-;-
+6675;Dovbyk;A;Pc;Bologna;15;15;58;-;-;-;-;-;-;-;Riserva;-;-
+309;Dybala;A;A;Roma;15;16;95;-;-;-;-;-;-;-;Riserva;-;-
+6060;Laurientè;A;A;Sassuolo;15;16;86;-;-;-;-;-;-;-;Riserva;-;-
+2061;Simeone;A;Pc;Torino;15;15;80;-;-;-;-;-;-;-;Riserva;-;-
+4371;Raspadori;A;A;Atalanta;14;15;76;-;-;-;-;-;-;-;Riserva;-;-
+7351;Santos A.;A;"W;A";Napoli;14;15;62;-;-;-;-;-;-;-;Riserva;-;-
+7023;Pellegrino M.;A;Pc;Fiorentina;14;14;50;-;-;-;-;-;-;-;Riserva;-;-
+6572;Castro S.;A;Pc;Roma;14;13;76;-;-;-;-;-;-;-;Riserva;-;-
+4463;Esposito Se.;A;A;Cagliari;13;14;40;-;-;-;-;-;-;-;Riserva;-;-
+2038;Pinamonti;A;Pc;Lazio;13;12;51;-;-;-;-;-;-;-;Riserva;-;-
+7547;Kevin Carlos;A;Pc;Cagliari;13;12;37;-;-;-;-;-;-;-;Riserva;-;-
+5734;Soulè;A;A;Roma;12;13;45;-;-;-;-;-;-;-;Riserva;-;-
+7484;Adams A.;A;Pc;Venezia;12;11;45;-;-;-;-;-;-;-;Riserva;-;-
+6967;Diao;A;"W;A";Como;11;12;47;-;-;-;-;-;-;-;Riserva;-;-
+4923;Colombo;A;Pc;Genoa;11;10;55;-;-;-;-;-;-;-;Riserva;-;-
+6229;Tourè E.;A;Pc;Parma;11;11;43;-;-;-;-;-;-;-;Riserva;-;-
+5672;Dia;A;A;Lazio;10;12;30;-;-;-;-;-;-;-;Riserva;-;-
+7313;Ratkov;A;Pc;Lazio;10;9;26;-;-;-;-;-;-;-;Riserva;-;-
+7347;Bowie;A;Pc;Sassuolo;10;9;39;-;-;-;-;-;-;-;Riserva;-;-
+6646;Adams C.;A;A;Torino;10;11;33;-;-;-;-;-;-;-;Riserva;-;-
+7554;Romero D.;A;Pc;Parma;10;10;37;-;-;-;-;-;-;-;Riserva;-;-
+6530;Ghedjemis;A;"W;A";Frosinone;9;10;27;-;-;-;-;-;-;-;Riserva;-;-
+5544;David;A;Pc;Juventus;9;8;37;-;-;-;-;-;-;-;Riserva;-;-
+5029;Geubbels;A;Pc;Lecce;9;8;23;-;-;-;-;-;-;-;Riserva;-;-
+2155;Cutrone;A;Pc;Monza;9;8;33;-;-;-;-;-;-;-;Riserva;-;-
+4359;Piccoli;A;Pc;Bologna;8;7;37;-;-;-;-;-;-;-;Riserva;-;-
+6164;Vitinha O.;A;A;Genoa;8;8;16;-;-;-;-;-;-;-;Riserva;-;-
+6904;Yeboah J.;A;A;Venezia;8;8;27;-;-;-;-;-;-;-;Riserva;-;-
+7449;Rrahmani Al.;A;Pc;Venezia;8;7;18;-;-;-;-;-;-;-;Riserva;-;-
+7600;Osmajic;A;Pc;Genoa;8;7;30;-;-;-;-;-;-;-;Riserva;-;-
+5436;Raimondo;A;Pc;Frosinone;7;6;22;-;-;-;-;-;-;-;Riserva;-;-
+6669;Bonny;A;Pc;Inter;7;6;18;-;-;-;-;-;-;-;Riserva;-;-
+7252;Stulic;A;Pc;Lecce;7;6;12;-;-;-;-;-;-;-;Riserva;-;-
+608;Zapata D.;A;Pc;Torino;7;6;18;-;-;-;-;-;-;-;Riserva;-;-
+5918;Sulemana K.;A;A;Atalanta;6;6;10;-;-;-;-;-;-;-;Riserva;-;-
+6598;Mutandwa;A;Pc;Cagliari;6;6;10;-;-;-;-;-;-;-;Riserva;-;-
+2832;Boga;A;"W;A";Juventus;6;7;26;-;-;-;-;-;-;-;Riserva;-;-
+6556;Noslin;A;A;Lazio;6;6;17;-;-;-;-;-;-;-;Riserva;-;-
+7008;Gimenez;A;Pc;Milan;6;5;10;-;-;-;-;-;-;-;Riserva;-;-
+6831;Neres;A;"W;A";Napoli;6;7;17;-;-;-;-;-;-;-;Riserva;-;-
+4896;Maldini;A;"T;A";Cagliari;5;6;21;-;-;-;-;-;-;-;Riserva;-;-
+6519;Camarda;A;Pc;Milan;5;4;20;-;-;-;-;-;-;-;Riserva;-;-
+5882;Mota;A;A;Monza;5;5;18;-;-;-;-;-;-;-;Riserva;-;-
+7523;Varela G.;A;Pc;Monza;5;5;7;-;-;-;-;-;-;-;Riserva;-;-
+7213;Frigan;A;A;Parma;5;5;10;-;-;-;-;-;-;-;Riserva;-;-
+4387;Adorante;A;Pc;Venezia;5;4;12;-;-;-;-;-;-;-;Riserva;-;-
+2012;Milik;A;Pc;Juventus;5;4;13;-;-;-;-;-;-;-;Riserva;-;-
+6243;Borrelli;A;Pc;Cagliari;4;4;9;-;-;-;-;-;-;-;Riserva;-;-
+7374;Mendy P.;A;Pc;Cagliari;4;3;14;-;-;-;-;-;-;-;Riserva;-;-
+313;Morata;A;Pc;Como;4;3;7;-;-;-;-;-;-;-;Riserva;-;-
+6204;Kvernadze;A;"W;A";Frosinone;4;5;16;-;-;-;-;-;-;-;Riserva;-;-
+7453;Havel;A;Pc;Genoa;4;3;9;-;-;-;-;-;-;-;Riserva;-;-
+7162;Giovane;A;A;Napoli;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+7120;Lang;A;A;Napoli;4;4;12;-;-;-;-;-;-;-;Riserva;-;-
+6215;Lucca;A;Pc;Napoli;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+7349;Kulenovic;A;Pc;Torino;4;3;9;-;-;-;-;-;-;-;Riserva;-;-
+7272;Gueye;A;Pc;Udinese;4;3;7;-;-;-;-;-;-;-;Riserva;-;-
+7546;Robinson J.;A;A;Monza;4;4;10;-;-;-;-;-;-;-;Riserva;-;-
+7602;Fatah;A;"W;A";Lecce;4;5;17;-;-;-;-;-;-;-;Riserva;-;-
+7128;Kuhn;A;"W;A";Como;3;4;5;-;-;-;-;-;-;-;Riserva;-;-
+6822;Ekhator;A;A;Juventus;3;3;10;-;-;-;-;-;-;-;Riserva;-;-
+7001;N'Dri;A;"W;A";Lecce;3;4;15;-;-;-;-;-;-;-;Riserva;-;-
+7342;Elphege;A;Pc;Parma;3;3;11;-;-;-;-;-;-;-;Riserva;-;-
+7561;Lontani;A;A;Parma;2;2;10;-;-;-;-;-;-;-;Riserva;-;-
+7317;Trepy;A;Pc;Cagliari;1;1;2;-;-;-;-;-;-;-;Riserva;-;-
+7027;Azon;A;Pc;Como;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+6981;Vaz;A;Pc;Roma;1;1;4;-;-;-;-;-;-;-;Riserva;-;-
+7161;Bayo V.;A;Pc;Udinese;1;1;3;-;-;-;-;-;-;-;Riserva;-;-
+7408;Lisman;A;"W;A";Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7482;Lauberbach;A;Pc;Venezia;1;1;1;-;-;-;-;-;-;-;Riserva;-;-
+7568;De Martis;A;Pc;Parma;1;1;1;-;-;-;-;-;-;-;Riserva;-;-

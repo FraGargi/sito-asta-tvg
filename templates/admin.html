@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Pannello Amministratore - Regia Asta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4B5563; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen p-4 select-none font-sans">
+
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 mb-4 flex flex-wrap justify-between items-center gap-4 shadow-xl">
+        <div class="flex items-center gap-3">
+            <span class="text-3xl">🎛️</span>
+            <div>
+                <h1 class="text-xl font-black text-blue-400 tracking-wider uppercase">Pannello Regia Admin</h1>
+                <div class="text-xs text-gray-400">Gestione Live, Rilanci Diretti, Rose e Modifica Crediti</div>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+            <input type="text" id="input-nome-asta" placeholder="Nome Asta (es. LEGA FANTACALCIO)" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold text-white w-48">
+            <button onclick="salvaNomeAsta()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">💾 Salva Titolo</button>
+
+            <a href="/api/esporta_csv" download class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-500 flex items-center gap-1 transition shadow">
+                📥 Esporta CSV Rose
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl">
+            <h2 class="text-base font-black text-amber-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
+                🔴 Controllo Asta in Corso
+            </h2>
+
+            <div id="admin-box-live" class="space-y-3">
+                <div id="admin-live-inattivo" class="text-center py-8 text-gray-500 italic text-sm border-2 border-dashed border-gray-800 rounded-xl">
+                    Nessun giocatore attualmente all'asta.<br>Selezionalo qui a fianco o pesca a sorte!
+                </div>
+
+                <div id="admin-live-attivo" class="hidden space-y-3">
+                    <div class="bg-gray-950 p-3 rounded-xl border border-blue-900">
+                        <div id="admin-live-ruolo-nome" class="text-2xl font-black uppercase"></div>
+                        <div id="admin-live-squadra-seriea" class="text-xs text-blue-400 font-bold uppercase"></div>
+                        <div class="text-[11px] text-yellow-300 mt-1" id="admin-live-fvm"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold">Offerta Corrente</div>
+                            <div id="admin-live-prezzo" class="text-3xl font-black text-green-400 font-mono">1 cr.</div>
+                            <div id="admin-live-vantaggio" class="text-[10px] text-amber-400 font-bold truncate mt-0.5">---</div>
+                        </div>
+                        <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold">Timer</div>
+                            <div id="admin-live-timer" class="text-3xl font-black text-red-500 font-mono">00:10</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-950 p-3 rounded-xl border border-amber-600 space-y-2">
+                        <div class="text-xs font-bold text-amber-400 uppercase">⚡ Rilancio Rapido da Regia</div>
+                        
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] text-gray-400 uppercase font-bold">Squadra che rilancia:</label>
+                            <select id="select-squadra-rilancio-admin" class="w-full bg-gray-900 border border-gray-700 p-2 rounded-xl text-xs font-bold text-white">
+                                {% for s in squadre %}
+                                <option value="{{ s.id }}">{{ s.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button onclick="setAdminIncremento(1)" id="btn-admin-inc-1" class="bg-blue-600 text-white font-black py-1 rounded-xl text-xs border-2 border-blue-400 shadow"> +1 CR </button>
+                            <button onclick="setAdminIncremento(5)" id="btn-admin-inc-5" class="bg-gray-800 text-gray-300 font-black py-1 rounded-xl text-xs border border-gray-700 shadow"> +5 CR </button>
+                            <button onclick="setAdminIncremento(10)" id="btn-admin-inc-10" class="bg-gray-800 text-gray-300 font-black py-1 rounded-xl text-xs border border-gray-700 shadow"> +10 CR </button>
+                        </div>
+
+                        <button onclick="adminRilancia()" class="w-full bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 active:scale-95 transition-all text-black font-black text-sm py-2.5 rounded-xl shadow-lg uppercase tracking-wider">
+                            🚀 RILANCIA DA REGIA (<span id="txt-admin-incremento">+1</span>)
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="resetTimer()" class="bg-indigo-900 hover:bg-indigo-800 text-indigo-200 text-xs font-bold py-2 rounded-xl border border-indigo-700">⏱️ +10s Timer</button>
+                        <button onclick="impostaPrezzoManuale()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 text-xs font-bold py-2 rounded-xl border border-gray-700">✏️ Forza Prezzo</button>
+                    </div>
+
+                    <div class="bg-gray-950 p-3 rounded-xl border border-emerald-800 space-y-2">
+                        <div class="text-xs font-bold text-emerald-400 uppercase">Aggiudica / Assegna Giocatore</div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <select id="select-squadra-assegna" class="bg-gray-900 border border-gray-700 p-2 rounded-xl text-xs font-bold text-white">
+                                {% for s in squadre %}
+                                <option value="{{ s.id }}">{{ s.nome }}</option>
+                                {% endfor %}
+                            </select>
+                            <input type="number" id="input-costo-assegna" placeholder="Costo cr." class="bg-gray-900 border border-gray-700 p-2 rounded-xl text-xs font-bold text-white font-mono">
+                        </div>
+                        <button onclick="confermaAssegnazione()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-black font-black py-2.5 rounded-xl text-xs uppercase tracking-wider shadow">
+                            ✅ ASSEGNA E CHIUDI ASTA
+                        </button>
+                    </div>
+
+                    <button onclick="stopAsta()" class="w-full bg-rose-950 hover:bg-rose-900 text-rose-300 font-bold py-2 rounded-xl border border-rose-800 text-xs uppercase">
+                        ⛔ Annulla Asta Attiva
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl">
+            <h2 class="text-base font-black text-blue-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
+                🎯 Chiama Giocatore in Asta
+            </h2>
+
+            <div class="space-y-1.5">
+                <div class="text-xs font-bold text-gray-400 uppercase">🎲 Pesca Casuale a Sorte</div>
+                <div class="grid grid-cols-5 gap-1.5">
+                    <button onclick="pescaCasuale('')" class="bg-blue-600 hover:bg-blue-500 text-white font-black py-2 rounded-xl text-xs uppercase">Tutti</button>
+                    <button onclick="pescaCasuale('P')" class="bg-yellow-700 hover:bg-yellow-600 text-white font-black py-2 rounded-xl text-xs uppercase">P</button>
+                    <button onclick="pescaCasuale('D')" class="bg-green-700 hover:bg-green-600 text-white font-black py-2 rounded-xl text-xs uppercase">D</button>
+                    <button onclick="pescaCasuale('C')" class="bg-indigo-700 hover:bg-indigo-600 text-white font-black py-2 rounded-xl text-xs uppercase">C</button>
+                    <button onclick="pescaCasuale('A')" class="bg-red-700 hover:bg-red-600 text-white font-black py-2 rounded-xl text-xs uppercase">A</button>
+                </div>
+            </div>
+
+            <div class="space-y-2 flex-1 flex flex-col min-h-0">
+                <div class="text-xs font-bold text-gray-400 uppercase">🔍 Cerca e Chiama dal Listone</div>
+                <input type="text" id="input-ricerca-admin" oninput="renderListoneAdmin()" placeholder="Cerca giocatore libero..." class="w-full bg-gray-950 border border-gray-800 p-2.5 rounded-xl text-xs font-bold text-white">
+                
+                <div id="container-listone-admin" class="flex-1 overflow-y-auto custom-scrollbar space-y-1 pr-1 max-h-96">
+                    </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-900 border border-gray-800 rounded-2xl p-4 flex flex-col space-y-4 shadow-2xl lg:col-span-1">
+            <h2 class="text-base font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2 border-b border-gray-800 pb-2">
+                🛡️ Rose, Spesa e Modifica Crediti
+            </h2>
+
+            <div id="container-squadre-admin" class="space-y-3 overflow-y-auto custom-scrollbar max-h-[75vh] pr-1">
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        let listoneCache = [];
+        let squadreCache = [];
+        let adminIncrementoScelto = 1;
+
+        async function caricaDatiIniziali() {
+            await scaricaListone();
+            aggiornaStatoAdmin();
+            setInterval(aggiornaStatoAdmin, 1000);
+        }
+
+        async function scaricaListone() {
+            try {
+                const res = await fetch('/api/lista_giocatori');
+                listoneCache = await res.json();
+                renderListoneAdmin();
+            } catch(e){}
+        }
+
+        function setAdminIncremento(val) {
+            adminIncrementoScelto = val;
+            document.getElementById('txt-admin-incremento').innerText = `+${val}`;
+            [1, 5, 10].forEach(v => {
+                const btn = document.getElementById(`btn-admin-inc-${v}`);
+                if (v === val) btn.className = "bg-blue-600 text-white font-black py-1 rounded-xl text-xs border-2 border-blue-400 shadow";
+                else btn.className = "bg-gray-800 text-gray-300 font-black py-1 rounded-xl text-xs border border-gray-700 shadow";
+            });
+        }
+
+        async function adminRilancia() {
+            const sqId = document.getElementById('select-squadra-rilancio-admin').value;
+            if (!sqId) { alert("Seleziona una squadra!"); return; }
+
+            try {
+                const res = await fetch('/api/rilancia', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ squadra_id: parseInt(sqId), incremento: adminIncrementoScelto })
+                });
+                if (!res.ok) {
+                    const data = await res.json();
+                    alert("Errore rilancio: " + (data.detail || "Rilancio rifiutato"));
+                }
+            } catch(e){}
+        }
+
+        function renderListoneAdmin() {
+            const query = document.getElementById('input-ricerca-admin').value.toLowerCase();
+            const container = document.getElementById('container-listone-admin');
+
+            const liberi = listoneCache.filter(g => !g.squadra_proprietaria && (g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query)));
+
+            if (liberi.length === 0) {
+                container.innerHTML = '<div class="text-xs text-gray-500 italic text-center py-4">Nessun giocatore trovato</div>';
+                return;
+            }
+
+            container.innerHTML = liberi.slice(0, 50).map(g => `
+                <div class="bg-gray-950 p-2 rounded-xl border border-gray-800 flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-black text-yellow-400">[${g.ruolo}]</span>
+                        <span class="font-bold text-white ml-1">${g.nome}</span>
+                        <span class="text-[10px] text-gray-400 ml-1">(${g.squadra_serie_a})</span>
+                    </div>
+                    <button onclick="avviaAstaGiocatore(${g.id})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-2.5 py-1 rounded-lg text-[10px] uppercase">
+                        🚀 Metti in Asta
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        async function avviaAstaGiocatore(id) {
+            try {
+                await fetch('/api/live', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ azione: 'start', giocatore_id: id })
+                });
+            } catch(e){}
+        }
+
+        async function pescaCasuale(ruolo) {
+            try {
+                const res = await fetch(`/api/pesca_casuale${ruolo ? '?ruolo=' + ruolo : ''}`, { method: 'POST' });
+                if (!res.ok) {
+                    const err = await res.json();
+                    alert(err.detail || "Errore pesca casuale");
+                }
+            } catch(e){}
+        }
+
+        async function resetTimer() {
+            await fetch('/api/live', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ azione: 'timer' })
+            });
+        }
+
+        async function impostaPrezzoManuale() {
+            const nuovo = prompt("Inserisci il nuovo prezzo corrente:");
+            if (nuovo && !isNaN(nuovo)) {
+                await fetch('/api/live', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ azione: 'aggiorna', prezzo: parseInt(nuovo) })
+                });
+            }
+        }
+
+        async function confermaAssegnazione() {
+            const sqId = document.getElementById('select-squadra-assegna').value;
+            const costo = document.getElementById('input-costo-assegna').value;
+            
+            const resLive = await fetch('/api/live');
+            const asta = await resLive.json();
+
+            if (!asta.attiva || !asta.giocatore_id) { alert("Nessun giocatore in asta!"); return; }
+            if (!costo || isNaN(costo) || costo < 1) { alert("Inserisci un costo valido!"); return; }
+
+            const res = await fetch('/api/assegna', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ giocatore_id: asta.giocatore_id, squadra_id: parseInt(sqId), costo: parseInt(costo) })
+            });
+
+            if (!res.ok) {
+                const data = await res.json();
+                alert(data.detail || "Errore durante l'assegnazione");
+            } else {
+                scaricaListone();
+            }
+        }
+
+        async function stopAsta() {
+            await fetch('/api/live', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ azione: 'stop' })
+            });
+        }
+
+        async function svincolaGiocatore(giocatoreId) {
+            if (confirm("Vuoi davvero svincolare questo giocatore e restituire i crediti?")) {
+                await fetch('/api/svincola', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ giocatore_id: giocatoreId })
+                });
+                scaricaListone();
+            }
+        }
+
+        async function modificaBudgetSquadra(squadraId) {
+            const inputVal = document.getElementById(`input-budget-${squadraId}`).value;
+            if (!inputVal || isNaN(inputVal) || inputVal < 1) { alert("Inserisci un budget valido!"); return; }
+
+            await fetch('/api/modifica_budget', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ squadra_id: squadraId, budget_iniziale: parseInt(inputVal) })
+            });
+        }
+
+        async function salvaNomeAsta() {
+            const nome = document.getElementById('input-nome-asta').value;
+            if (nome) {
+                await fetch('/api/imposta_nome_asta', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nome: nome })
+                });
+            }
+        }
+
+        async function aggiornaStatoAdmin() {
+            try {
+                // 1. Stato Live
+                const resLive = await fetch('/api/live');
+                const asta = await resLive.json();
+
+                const boxInattivo = document.getElementById('admin-live-inattivo');
+                const boxAttivo = document.getElementById('admin-live-attivo');
+
+                if (asta.attiva) {
+                    boxInattivo.classList.add('hidden');
+                    boxAttivo.classList.remove('hidden');
+
+                    document.getElementById('admin-live-ruolo-nome').innerHTML = `[${asta.ruolo}] ${asta.nome}`;
+                    document.getElementById('admin-live-squadra-seriea').innerText = asta.squadra_serie_a;
+                    document.getElementById('admin-live-fvm').innerText = `FVM: ${asta.fvm}`;
+                    document.getElementById('admin-live-prezzo').innerText = `${asta.prezzo} cr.`;
+                    document.getElementById('admin-live-vantaggio').innerText = `In Vantaggio: ${asta.squadra_in_vantaggio || 'Nessuna'}`;
+                    
+                    const rimanenti = Math.max(0, asta.fine_timer - Math.floor(Date.now() / 1000));
+                    document.getElementById('admin-live-timer').innerText = `00:${rimanenti < 10 ? '0' : ''}${rimanenti}`;
+
+                    const inputCosto = document.getElementById('input-costo-assegna');
+                    if (!inputCosto.value || inputCosto.dataset.auto === "true") {
+                        inputCosto.value = asta.prezzo;
+                        inputCosto.dataset.auto = "true";
+                    }
+                } else {
+                    boxInattivo.classList.remove('hidden');
+                    boxAttivo.classList.add('hidden');
+                }
+
+                // 2. Stato Rose e Squadre
+                const resSquadre = await fetch('/api/stato_squadre');
+                squadreCache = await resSquadre.json();
+
+                const containerSquadre = document.getElementById('container-squadre-admin');
+                containerSquadre.innerHTML = squadreCache.map(s => {
+                    const rosaHtml = s.rosa.map(g => `
+                        <div class="flex justify-between items-center text-xs bg-gray-900 p-1.5 rounded border border-gray-800">
+                            <div><span class="font-black text-yellow-400">[${g.ruolo}]</span> <span class="text-white font-bold">${g.nome}</span></div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-green-400 font-mono font-bold">${g.costo} cr</span>
+                                <button onclick="svincolaGiocatore(${g.id})" class="text-red-400 hover:text-red-300 font-bold text-xs px-1" title="Svincola Giocatore">❌</button>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    return `
+                        <div class="bg-gray-950 p-3 rounded-xl border border-gray-800 space-y-2">
+                            <div class="flex justify-between items-center border-b border-gray-800 pb-1.5">
+                                <h3 class="font-black text-blue-400 uppercase text-sm">${s.nome}</h3>
+                                <div class="text-xs font-mono">
+                                    Spesi: <strong class="text-green-400">${s.spesi} cr</strong> | Residui: <strong class="text-amber-300">${s.crediti_residui} cr</strong>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between gap-2 bg-gray-900 p-1.5 rounded-lg border border-gray-800 text-xs">
+                                <span class="text-gray-400">Budget Iniziale:</span>
+                                <div class="flex gap-1">
+                                    <input type="number" id="input-budget-${s.id}" value="${s.budget_iniziale}" class="bg-gray-950 border border-gray-700 px-2 py-0.5 rounded text-xs font-mono font-bold w-20 text-center">
+                                    <button onclick="modificaBudgetSquadra(${s.id})" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold px-2 py-0.5 rounded text-[10px] uppercase">💾 Salva</button>
+                                </div>
+                            </div>
+
+                            <div class="max-h-36 overflow-y-auto custom-scrollbar space-y-1 pr-1">
+                                ${rosaHtml || '<div class="text-[11px] text-gray-500 italic text-center py-2">Nessun giocatore in rosa</div>'}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch(e){}
+        }
+
+        caricaDatiIniziali();
+    </script>
+</body>
+</html>
