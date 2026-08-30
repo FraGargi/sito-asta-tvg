@@ -8,6 +8,7 @@ from typing import Optional
 import time
 import io
 import random
+import json
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./fanta.db"
 engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
@@ -19,6 +20,8 @@ class Squadra(Base):
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, unique=True, index=True)
     budget_iniziale = Column(Integer, default=500)
+    watchlist = Column(String, default="{}") 
+    password = Column(String, default="") # Nuovo campo per la sicurezza
 
 class Giocatore(Base):
     __tablename__ = "giocatori"
@@ -72,6 +75,9 @@ class ModificaBudget(BaseModel): squadra_id: int; budget_iniziale: int
 class NuovaSquadra(BaseModel): nome: str; budget_iniziale: int = 500
 class EliminaSquadra(BaseModel): squadra_id: int
 class RinominaSquadra(BaseModel): squadra_id: int; nuovo_nome: str
+class WatchlistData(BaseModel): squadra_id: int; watchlist: dict
+class LoginData(BaseModel): squadra_id: int; password: str
+class ResetPasswordData(BaseModel): squadra_id: int
 
 @app.on_event("startup")
 def startup_event():
@@ -95,6 +101,29 @@ def read_tv(request: Request):
 def read_user(request: Request, db: Session = Depends(get_db)):
     squadre = db.query(Squadra).all()
     return templates.TemplateResponse(request=request, name="user.html", context={"squadre": squadre})
+
+@app.post("/api/login")
+def login_squadra(dati: LoginData, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
+    if not squadra:
+        raise HTTPException(status_code=404, detail="Squadra non trovata")
+    
+    if not squadra.password:
+        squadra.password = dati.password
+        db.commit()
+        return {"status": "success", "message": "Password impostata"}
+    
+    if squadra.password != dati.password:
+        raise HTTPException(status_code=401, detail="Password errata!")
+    return {"status": "success"}
+
+@app.post("/api/reset_password")
+def reset_password(dati: ResetPasswordData, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
+    if squadra:
+        squadra.password = ""
+        db.commit()
+    return {"status": "success"}
 
 @app.post("/api/imposta_nome_asta")
 def imposta_nome_asta(dati: NomeAsta):
@@ -194,7 +223,6 @@ def gestisci_live(dati: UpdateLive, db: Session = Depends(get_db)):
                 "prezzo": 1, "fine_timer": int(time.time()) + 10, "fvm": g.fvm, 
                 "ultimi_rilanci": [{"squadra": "Base d'asta", "prezzo": 1}],
                 "squadra_in_vantaggio": "Nessuna (Base d'asta)",
-                # Aggiunta statistiche per la TV
                 "stat_pv": g.stat_pv, "stat_mv": g.stat_mv, "stat_fm": g.stat_fm,
                 "stat_gf": g.stat_gf, "stat_gs": g.stat_gs, "stat_ass": g.stat_ass,
                 "stat_amm": g.stat_amm, "stat_esp": g.stat_esp
@@ -350,3 +378,21 @@ def stato_squadre(db: Session = Depends(get_db)):
             "rosa": [{"id": g.id, "nome": g.nome, "ruolo": g.ruolo, "costo": g.costo} for g in giocatori]
         })
     return risultato
+
+@app.get("/api/watchlist/{squadra_id}")
+def get_watchlist(squadra_id: int, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == squadra_id).first()
+    if squadra and squadra.watchlist:
+        try:
+            return json.loads(squadra.watchlist)
+        except:
+            return {}
+    return {}
+
+@app.post("/api/salva_watchlist")
+def salva_watchlist(dati: WatchlistData, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
+    if squadra:
+        squadra.watchlist = json.dumps(dati.watchlist)
+        db.commit()
+    return {"status": "success"}

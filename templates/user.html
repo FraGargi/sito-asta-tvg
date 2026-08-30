@@ -16,12 +16,13 @@
     <div id="modal-team" class="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-6">
         <div class="bg-gray-900 border border-blue-600 rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl">
             <h2 class="text-xl font-black text-blue-400 mb-2">CHI SEI?</h2>
-            <p class="text-xs text-gray-400 mb-4">Seleziona la tua squadra per partecipare all'asta dai tuoi dispositivi.</p>
-            <select id="select-team" class="w-full bg-gray-800 border border-gray-700 text-white p-3 rounded-xl mb-4 font-bold text-center">
+            <p class="text-xs text-gray-400 mb-4">Seleziona la tua squadra e imposta (o inserisci) la tua password per accedere.</p>
+            <select id="select-team" class="w-full bg-gray-800 border border-gray-700 text-white p-3 rounded-xl mb-3 font-bold text-center">
                 {% for s in squadre %}
                 <option value="{{ s.id }}">{{ s.nome }}</option>
                 {% endfor %}
             </select>
+            <input type="password" id="input-password" placeholder="Inserisci Password" class="w-full bg-gray-800 border border-gray-700 text-white p-3 rounded-xl mb-4 font-bold text-center outline-none focus:border-blue-500">
             <button onclick="confermaSquadra()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-3 rounded-xl uppercase tracking-wider shadow-lg">Entra in Asta</button>
         </div>
     </div>
@@ -181,11 +182,35 @@
         let filtroHubRuolo = '';
         let laMiaSquadraData = null;
 
-        let myWatchlist = JSON.parse(localStorage.getItem('fanta_watchlist') || '{}');
+        let myWatchlist = {};
 
-        function saveWatchlist() {
-            localStorage.setItem('fanta_watchlist', JSON.stringify(myWatchlist));
+        async function scaricaWatchlistServer() {
+            if (!myTeamId) return;
+            try {
+                const res = await fetch(`/api/watchlist/${myTeamId}`);
+                myWatchlist = await res.json();
+                updateBadgeSegnati();
+                
+                if (!document.getElementById('modal-catalogo').classList.contains('hidden')) {
+                    renderHubListone();
+                    if (!document.getElementById('tab-content-segnati').classList.contains('hidden')) {
+                        renderHubSegnati();
+                    }
+                }
+            } catch(e) {}
+        }
+
+        async function saveWatchlist() {
             updateBadgeSegnati();
+            if (myTeamId) {
+                try {
+                    await fetch('/api/salva_watchlist', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ squadra_id: parseInt(myTeamId), watchlist: myWatchlist })
+                    });
+                } catch (e) {}
+            }
         }
 
         function updateBadgeSegnati() {
@@ -212,16 +237,45 @@
         if (myTeamId && myTeamName) {
             document.getElementById('modal-team').classList.add('hidden');
             document.getElementById('user-team-name').innerText = myTeamName;
+            scaricaWatchlistServer();
         }
 
-        function confermaSquadra() {
+        async function confermaSquadra() {
             const select = document.getElementById('select-team');
-            myTeamId = select.value;
-            myTeamName = select.options[select.selectedIndex].text;
-            localStorage.setItem('fanta_team_id', myTeamId);
-            localStorage.setItem('fanta_team_name', myTeamName);
-            document.getElementById('modal-team').classList.add('hidden');
-            document.getElementById('user-team-name').innerText = myTeamName;
+            const pwd = document.getElementById('input-password').value;
+            const sqId = select.value;
+            const sqName = select.options[select.selectedIndex].text;
+
+            if (!pwd) {
+                alert("Inserisci una password per proteggere il tuo account!");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ squadra_id: parseInt(sqId), password: pwd })
+                });
+
+                if (!res.ok) {
+                    const data = await res.json();
+                    alert("Errore Accesso: " + (data.detail || "Password errata!"));
+                    return;
+                }
+
+                myTeamId = sqId;
+                myTeamName = sqName;
+                localStorage.setItem('fanta_team_id', myTeamId);
+                localStorage.setItem('fanta_team_name', myTeamName);
+                document.getElementById('modal-team').classList.add('hidden');
+                document.getElementById('user-team-name').innerText = myTeamName;
+                document.getElementById('input-password').value = "";
+                scaricaWatchlistServer();
+
+            } catch (e) {
+                alert("Errore di connessione al server.");
+            }
         }
 
         function cambiaSquadra() {
@@ -310,7 +364,6 @@
                 catalogoGiocatoriCache = await resG.json();
                 catalogoGiocatoriCache.sort((a, b) => a.nome.localeCompare(b.nome));
 
-                // Popola il menu a tendina delle squadre
                 const selSquadre = document.getElementById('hub-filtro-squadra');
                 if (selSquadre && selSquadre.options.length === 1) {
                     const squadreSet = new Set(catalogoGiocatoriCache.map(g => g.squadra_serie_a));

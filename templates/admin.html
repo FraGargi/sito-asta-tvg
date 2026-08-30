@@ -288,6 +288,17 @@
             }
         }
 
+        async function resetPasswordSquadra(squadraId) {
+            if (confirm("Vuoi davvero resettare la password di questa squadra? Il prossimo che accederà potrà impostarne una nuova.")) {
+                await fetch('/api/reset_password', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ squadra_id: squadraId })
+                });
+                alert("Password resettata con successo!");
+            }
+        }
+
         function cambiaOrdinamentoAdmin() {
             adminOrdinamento = document.getElementById('select-ordinamento-admin').value;
             renderListoneAdmin();
@@ -533,6 +544,7 @@
                                     <div class="text-xs font-mono">
                                         Spesi: <strong class="text-green-400">${s.spesi} cr</strong> | Residui: <strong class="text-amber-300">${s.crediti_residui} cr</strong>
                                     </div>
+                                    <button onclick="resetPasswordSquadra(${s.id})" class="text-amber-400 hover:text-amber-300 font-bold text-xs px-1" title="Sblocca Password">🔓</button>
                                     <button onclick="eliminaSquadra(${s.id})" class="text-red-400 hover:text-red-300 font-bold text-xs px-1" title="Elimina Squadra">🗑️</button>
                                 </div>
                             </div>
