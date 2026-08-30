@@ -27,6 +27,11 @@
             <input type="text" id="input-nome-asta" placeholder="Nome Asta (es. LEGA FANTACALCIO)" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold text-white w-48">
             <button onclick="salvaNomeAsta()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">💾 Salva Titolo</button>
 
+            <!-- Aggiungi Squadra -->
+            <input type="text" id="input-nuova-squadra" placeholder="Nome Squadra" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold text-white w-32">
+            <input type="number" id="input-budget-squadra" placeholder="Budget" value="500" class="bg-gray-800 border border-gray-700 px-3 py-1.5 rounded-xl text-xs font-bold text-white w-20">
+            <button onclick="aggiungiSquadra()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold px-3 py-1.5 rounded-xl transition">➕ Aggiungi</button>
+
             <a href="/api/esporta_csv" download class="bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-500 flex items-center gap-1 transition shadow">
                 📥 Esporta CSV Rose
             </a>
@@ -188,7 +193,7 @@
         let squadreCache = [];
         let adminIncrementoScelto = 1;
         let adminFiltroRuolo = '';
-        let adminOrdinamento = 'fvm_desc'; // Stato iniziale ordinamento
+        let adminOrdinamento = 'fvm_desc';
 
         function getColorRuolo(ruolo) {
             const r = (ruolo || '').trim().toUpperCase();
@@ -211,6 +216,76 @@
                 listoneCache = await res.json();
                 renderListoneAdmin();
             } catch(e){}
+        }
+
+        async function aggiungiSquadra() {
+            const nome = document.getElementById('input-nuova-squadra').value.trim();
+            const budget = parseInt(document.getElementById('input-budget-squadra').value) || 500;
+            
+            if (!nome) {
+                alert("Inserisci un nome per la squadra!");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/aggiungi_squadra', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ nome: nome, budget_iniziale: budget })
+                });
+
+                if (res.ok) {
+                    document.getElementById('input-nuova-squadra').value = '';
+                    document.getElementById('input-budget-squadra').value = '500';
+                    location.reload();
+                } else {
+                    const data = await res.json();
+                    alert("Errore: " + (data.detail || "Impossibile aggiungere la squadra"));
+                }
+            } catch (e) {
+                alert("Errore di connessione al server");
+            }
+        }
+
+        async function rinominaSquadra(squadraId, vecchioNome) {
+            const nuovoNome = prompt("Inserisci il nuovo nome per la squadra:", vecchioNome);
+            if (nuovoNome && nuovoNome.trim() !== "" && nuovoNome.trim() !== vecchioNome) {
+                try {
+                    const res = await fetch('/api/rinomina_squadra', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ squadra_id: squadraId, nuovo_nome: nuovoNome.trim() })
+                    });
+                    if (res.ok) {
+                        location.reload();
+                    } else {
+                        const data = await res.json();
+                        alert("Errore: " + (data.detail || "Impossibile rinominare la squadra"));
+                    }
+                } catch (e) {
+                    alert("Errore di connessione al server");
+                }
+            }
+        }
+
+        async function eliminaSquadra(squadraId) {
+            if (confirm("Vuoi davvero eliminare questa squadra? I giocatori in rosa torneranno svincolati.")) {
+                try {
+                    const res = await fetch('/api/elimina_squadra', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({ squadra_id: squadraId })
+                    });
+                    if (res.ok) {
+                        location.reload();
+                    } else {
+                        const data = await res.json();
+                        alert("Errore: " + (data.detail || "Impossibile eliminare la squadra"));
+                    }
+                } catch (e) {
+                    alert("Errore di connessione al server");
+                }
+            }
         }
 
         function cambiaOrdinamentoAdmin() {
@@ -262,14 +337,12 @@
             const query = document.getElementById('input-ricerca-admin').value.toLowerCase();
             const container = document.getElementById('container-listone-admin');
 
-            // Filtro per ruolo, ricerca testo e svincolati
             let liberi = listoneCache.filter(g => 
                 !g.squadra_proprietaria && 
                 (adminFiltroRuolo === '' || g.ruolo === adminFiltroRuolo) &&
                 (g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query))
             );
 
-            // Applica l'ordinamento dinamico in base alla selezione
             liberi.sort((a, b) => {
                 if (adminOrdinamento === 'fvm_desc' || adminOrdinamento === 'fvm_asc') {
                     const fvmA = parseFloat(String(a.fvm).replace(',', '.')) || 0;
@@ -342,7 +415,6 @@
         async function confermaAssegnazione() {
             const sqId = document.getElementById('select-squadra-assegna').value;
             const costo = document.getElementById('input-costo-assegna').value;
-            
             const resLive = await fetch('/api/live');
             const asta = await resLive.json();
 
@@ -406,7 +478,6 @@
 
         async function aggiornaStatoAdmin() {
             try {
-                // 1. Stato Live
                 const resLive = await fetch('/api/live');
                 const asta = await resLive.json();
 
@@ -436,7 +507,6 @@
                     boxAttivo.classList.add('hidden');
                 }
 
-                // 2. Stato Rose e Squadre
                 const resSquadre = await fetch('/api/stato_squadre');
                 squadreCache = await resSquadre.json();
 
@@ -455,13 +525,18 @@
                     return `
                         <div class="bg-gray-950 p-3 rounded-xl border border-gray-800 space-y-2">
                             <div class="flex justify-between items-center border-b border-gray-800 pb-1.5">
-                                <h3 class="font-black text-blue-400 uppercase text-sm">${s.nome}</h3>
-                                <div class="text-xs font-mono">
-                                    Spesi: <strong class="text-green-400">${s.spesi} cr</strong> | Residui: <strong class="text-amber-300">${s.crediti_residui} cr</strong>
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="font-black text-blue-400 uppercase text-sm">${s.nome}</h3>
+                                    <button onclick="rinominaSquadra(${s.id}, '${s.nome.replace(/'/g, "\\'")}')" class="text-[10px] bg-gray-800 hover:bg-gray-700 text-gray-300 px-1.5 py-0.5 rounded border border-gray-600" title="Rinomina Squadra">✏️ Rinomina</button>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <div class="text-xs font-mono">
+                                        Spesi: <strong class="text-green-400">${s.spesi} cr</strong> | Residui: <strong class="text-amber-300">${s.crediti_residui} cr</strong>
+                                    </div>
+                                    <button onclick="eliminaSquadra(${s.id})" class="text-red-400 hover:text-red-300 font-bold text-xs px-1" title="Elimina Squadra">🗑️</button>
                                 </div>
                             </div>
 
-                            <!-- Modifica Crediti / Budget Iniziale -->
                             <div class="flex items-center justify-between gap-2 bg-gray-900 p-1.5 rounded-lg border border-gray-800 text-xs">
                                 <span class="text-gray-400">Budget Iniziale:</span>
                                 <div class="flex gap-1">
@@ -470,7 +545,6 @@
                                 </div>
                             </div>
 
-                            <!-- Giocatori in Rosa -->
                             <div class="max-h-36 overflow-y-auto custom-scrollbar space-y-1 pr-1">
                                 ${rosaHtml || '<div class="text-[11px] text-gray-500 italic text-center py-2">Nessun giocatore in rosa</div>'}
                             </div>

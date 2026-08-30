@@ -2,13 +2,11 @@ from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Index
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import declarative_base, sessionmaker, Session
 from typing import Optional
 import time
 import io
-import csv
-import os
 import random
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./fanta.db"
@@ -22,16 +20,6 @@ class Squadra(Base):
     nome = Column(String, unique=True, index=True)
     budget_iniziale = Column(Integer, default=500)
 
-class InfoSquadraSerieA(Base):
-    __tablename__ = "info_squadre_serie_a"
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, unique=True, index=True)
-    modulo = Column(String, default="-")
-    formazione_tipo = Column(String, default="-")
-    rigoristi = Column(String, default="-")
-    piazzati = Column(String, default="-")
-    ballottaggi = Column(String, default="-")
-
 class Giocatore(Base):
     __tablename__ = "giocatori"
     id = Column(Integer, primary_key=True, index=True)
@@ -43,16 +31,14 @@ class Giocatore(Base):
     quotazione = Column(String, default="1")
     quotazione_mantra = Column(String, default="1")
     fvm = Column(String, default="0")
-    media = Column(String, default="-")
-    fantamedia = Column(String, default="-")
-    titolarita = Column(String, default="-")
-    affidabilita = Column(String, default="-")
-    integrita = Column(String, default="-")
-    rigori = Column(String, default="-")
-    piazzati = Column(String, default="-")
-    formazione = Column(String, default="-")
-    dettaglio_ruolo = Column(String, default="-")
-    descrizione = Column(String, default="-")
+    stat_pv = Column(Integer, default=0)
+    stat_mv = Column(Float, default=0.0)
+    stat_fm = Column(Float, default=0.0)
+    stat_gf = Column(Integer, default=0)
+    stat_gs = Column(Integer, default=0)
+    stat_ass = Column(Integer, default=0)
+    stat_amm = Column(Integer, default=0)
+    stat_esp = Column(Integer, default=0)
 
     squadra_id = Column(Integer, ForeignKey("squadre.id"), nullable=True, index=True)
     costo = Column(Integer, nullable=True)
@@ -74,11 +60,7 @@ def get_db():
 stato_asta = {
     "nome_asta": "ASTA FANTACALCIO",
     "attiva": False, "giocatore_id": None, "nome": "", "ruolo": "", "squadra_serie_a": "", "prezzo": 1, "fine_timer": 0,
-    "fvm": "0", "titolarita": "-", "affidabilita": "-", "integrita": "-",
-    "rigori": "-", "piazzati": "-", "formazione": "-", "dettaglio_ruolo": "-", "descrizione": "-",
-    "ultimi_rilanci": [],
-    "squadra_in_vantaggio": "Nessuna",
-    "version": 0
+    "fvm": "0", "ultimi_rilanci": [], "squadra_in_vantaggio": "Nessuna", "version": 0
 }
 
 class Assegnazione(BaseModel): giocatore_id: int; squadra_id: int; costo: int
@@ -87,6 +69,9 @@ class Svincolo(BaseModel): giocatore_id: int
 class NomeAsta(BaseModel): nome: str
 class Rilancio(BaseModel): squadra_id: int; incremento: int = 1
 class ModificaBudget(BaseModel): squadra_id: int; budget_iniziale: int
+class NuovaSquadra(BaseModel): nome: str; budget_iniziale: int = 500
+class EliminaSquadra(BaseModel): squadra_id: int
+class RinominaSquadra(BaseModel): squadra_id: int; nuovo_nome: str
 
 @app.on_event("startup")
 def startup_event():
@@ -118,30 +103,66 @@ def imposta_nome_asta(dati: NomeAsta):
     stato_asta["version"] += 1
     return {"status": "success"}
 
+@app.post("/api/aggiungi_squadra")
+def aggiungi_squadra(dati: NuovaSquadra, db: Session = Depends(get_db)):
+    esistente = db.query(Squadra).filter(Squadra.nome == dati.nome).first()
+    if esistente:
+        raise HTTPException(status_code=400, detail="Esiste già una squadra con questo nome!")
+    nuova = Squadra(nome=dati.nome, budget_iniziale=dati.budget_iniziale)
+    db.add(nuova)
+    db.commit()
+    global stato_asta
+    stato_asta["version"] += 1
+    return {"status": "success", "id": nuova.id}
+
+@app.post("/api/rinomina_squadra")
+def rinomina_squadra(dati: RinominaSquadra, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
+    if not squadra:
+        raise HTTPException(status_code=404, detail="Squadra non trovata")
+    
+    esistente = db.query(Squadra).filter(Squadra.nome == dati.nuovo_nome).first()
+    if esistente and esistente.id != squadra.id:
+        raise HTTPException(status_code=400, detail="Esiste già una squadra con questo nome!")
+        
+    squadra.nome = dati.nuovo_nome
+    db.commit()
+    global stato_asta
+    stato_asta["version"] += 1
+    return {"status": "success"}
+
+@app.post("/api/elimina_squadra")
+def elimina_squadra(dati: EliminaSquadra, db: Session = Depends(get_db)):
+    squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
+    if not squadra:
+        raise HTTPException(status_code=404, detail="Squadra non trovata")
+    
+    giocatori = db.query(Giocatore).filter(Giocatore.squadra_id == squadra.id).all()
+    for g in giocatori:
+        g.squadra_id = None
+        g.costo = None
+        g.assegnato_il = 0
+        
+    db.delete(squadra)
+    db.commit()
+    global stato_asta
+    stato_asta["version"] += 1
+    return {"status": "success"}
+
 @app.get("/api/esporta_csv")
 def esporta_csv(db: Session = Depends(get_db)):
     squadre = db.query(Squadra).all()
     output = io.StringIO()
-    
     for sq in squadre:
-        # Delimitatore iniziale di blocco squadra richiesto da Leghe FC
         output.write("$,$,$\n")
-        
         giocatori = db.query(Giocatore).filter(Giocatore.squadra_id == sq.id).all()
         for g in giocatori:
-            # Rimuove eventuali virgole dal nome squadra per non corrompere la formattazione CSV
             nome_sq = str(sq.nome).replace(",", "")
-            
-            # Leghe FC richiede rigorosamente l'ID ufficiale del giocatore
             fanta_id = g.fantacalcio_id if g.fantacalcio_id else str(g.id)
             costo = g.costo if g.costo is not None else 1
-            
             output.write(f"{nome_sq},{fanta_id},{costo}\n")
-            
-    # Delimitatore finale di chiusura file
     output.write("$,$,$\n")
     output.seek(0)
-    
     return StreamingResponse(
         output, 
         media_type="text/csv", 
@@ -155,17 +176,12 @@ def lista_giocatori(db: Session = Depends(get_db)):
     return [{
         "id": g.id, "nome": g.nome, "ruolo": g.ruolo, "squadra_serie_a": g.squadra_serie_a,
         "quotazione": g.quotazione, "fvm": g.fvm, 
-        "titolarita": g.titolarita, "affidabilita": g.affidabilita, "integrita": g.integrita,
-        "rigori": g.rigori, "piazzati": g.piazzati, "formazione": g.formazione,
-        "dettaglio_ruolo": g.dettaglio_ruolo, "descrizione": g.descrizione,
+        "stat_pv": g.stat_pv, "stat_mv": g.stat_mv, "stat_fm": g.stat_fm,
+        "stat_gf": g.stat_gf, "stat_gs": g.stat_gs, "stat_ass": g.stat_ass,
+        "stat_amm": g.stat_amm, "stat_esp": g.stat_esp,
         "squadra_proprietaria": squadre.get(g.squadra_id) if g.squadra_id else None,
         "costo": g.costo
     } for g in giocatori]
-
-@app.get("/api/info_squadre_serie_a")
-def info_squadre_serie_a(db: Session = Depends(get_db)):
-    info = db.query(InfoSquadraSerieA).all()
-    return {i.nome: {"modulo": i.modulo, "formazione_tipo": i.formazione_tipo, "rigoristi": i.rigoristi, "piazzati": i.piazzati, "ballottaggi": i.ballottaggi} for i in info}
 
 @app.post("/api/live")
 def gestisci_live(dati: UpdateLive, db: Session = Depends(get_db)):
@@ -176,9 +192,6 @@ def gestisci_live(dati: UpdateLive, db: Session = Depends(get_db)):
             stato_asta.update({
                 "attiva": True, "giocatore_id": g.id, "nome": g.nome, "ruolo": g.ruolo, "squadra_serie_a": g.squadra_serie_a, 
                 "prezzo": 1, "fine_timer": int(time.time()) + 10, "fvm": g.fvm, 
-                "titolarita": g.titolarita, "affidabilita": g.affidabilita, "integrita": g.integrita,
-                "rigori": g.rigori, "piazzati": g.piazzati, "formazione": g.formazione, 
-                "dettaglio_ruolo": g.dettaglio_ruolo, "descrizione": g.descrizione,
                 "ultimi_rilanci": [{"squadra": "Base d'asta", "prezzo": 1}],
                 "squadra_in_vantaggio": "Nessuna (Base d'asta)"
             })
@@ -189,7 +202,6 @@ def gestisci_live(dati: UpdateLive, db: Session = Depends(get_db)):
         stato_asta["fine_timer"] = int(time.time()) + 10 
     elif dati.azione == "stop": 
         stato_asta["attiva"] = False
-    
     stato_asta["version"] += 1
     return stato_asta
 
@@ -198,44 +210,34 @@ def rilancia_asta(dati: Rilancio, db: Session = Depends(get_db)):
     global stato_asta
     if not stato_asta["attiva"]:
         raise HTTPException(status_code=400, detail="Nessuna asta attiva al momento!")
-        
     if int(time.time()) >= stato_asta["fine_timer"]:
         raise HTTPException(status_code=400, detail="Tempo scaduto! Non puoi più rilanciare.")
-        
     if dati.incremento not in [1, 5, 10]:
         raise HTTPException(status_code=400, detail="Incremento non valido!")
-    
     squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
     if not squadra:
         raise HTTPException(status_code=404, detail="Squadra non trovata")
-        
     giocatori_squadra = db.query(Giocatore).filter(Giocatore.squadra_id == squadra.id).all()
-    
     ruolo_asta = stato_asta["ruolo"]
     count_ruolo = sum(1 for g in giocatori_squadra if g.ruolo == ruolo_asta)
     limite_ruolo = REGOLE_ROSA.get(ruolo_asta, 99)
     if count_ruolo >= limite_ruolo:
         raise HTTPException(status_code=400, detail=f"Hai già raggiunto il limite massimo di {limite_ruolo} per il ruolo {ruolo_asta}!")
-    
     spesa = sum(g.costo for g in giocatori_squadra if g.costo)
     slot_v = SLOT_TOTALI - len(giocatori_squadra)
     crediti_da_conservare = slot_v - 1 if slot_v > 0 else 0
     offerta_max = squadra.budget_iniziale - spesa - crediti_da_conservare
-    
     nuovo_prezzo = stato_asta["prezzo"] + dati.incremento
     if nuovo_prezzo > offerta_max:
         raise HTTPException(status_code=400, detail=f"Crediti insufficienti! (Devi conservare 1 cr. per i tuoi altri {crediti_da_conservare} slot vuoti)")
-        
     stato_asta["prezzo"] = nuovo_prezzo
     stato_asta["fine_timer"] = int(time.time()) + 10
     stato_asta["squadra_in_vantaggio"] = squadra.nome
     stato_asta["version"] += 1
-    
     if "ultimi_rilanci" not in stato_asta:
         stato_asta["ultimi_rilanci"] = []
     stato_asta["ultimi_rilanci"].insert(0, {"squadra": squadra.nome, "prezzo": nuovo_prezzo})
     stato_asta["ultimi_rilanci"] = stato_asta["ultimi_rilanci"][:5]
-    
     return {"status": "success", "nuovo_prezzo": nuovo_prezzo}
 
 @app.get("/api/live")
@@ -247,22 +249,17 @@ def assegna_giocatore(dati: Assegnazione, db: Session = Depends(get_db)):
     squadra = db.query(Squadra).filter(Squadra.id == dati.squadra_id).first()
     if not giocatore or not squadra or giocatore.squadra_id is not None: 
         raise HTTPException(status_code=400, detail="Giocatore o Squadra non validi o già assegnato")
-    
     giocatori_squadra = db.query(Giocatore).filter(Giocatore.squadra_id == squadra.id).all()
-    
     count_ruolo = sum(1 for g in giocatori_squadra if g.ruolo == giocatore.ruolo)
     limite_ruolo = REGOLE_ROSA.get(giocatore.ruolo, 99)
     if count_ruolo >= limite_ruolo:
         raise HTTPException(status_code=400, detail=f"Errore: La squadra ha già {limite_ruolo} giocatori per il ruolo {giocatore.ruolo}!")
-    
     spesa = sum(g.costo for g in giocatori_squadra if g.costo)
     slot_v = SLOT_TOTALI - len(giocatori_squadra)
     crediti_da_conservare = slot_v - 1 if slot_v > 0 else 0
     offerta_max = squadra.budget_iniziale - spesa - crediti_da_conservare
-    
     if dati.costo > offerta_max: 
         raise HTTPException(status_code=400, detail=f"Errore: Crediti insufficienti. Max offerta per questa squadra: {offerta_max}")
-        
     giocatore.squadra_id = squadra.id; giocatore.costo = dati.costo; giocatore.assegnato_il = int(time.time()); db.commit()
     global stato_asta; stato_asta["attiva"] = False; stato_asta["version"] += 1
     return {"status": "success"}
@@ -298,9 +295,6 @@ def pesca_casuale(ruolo: Optional[str] = None, db: Session = Depends(get_db)):
     stato_asta.update({
         "attiva": True, "giocatore_id": g.id, "nome": g.nome, "ruolo": g.ruolo, "squadra_serie_a": g.squadra_serie_a, 
         "prezzo": 1, "fine_timer": int(time.time()) + 10, "fvm": g.fvm, 
-        "titolarita": g.titolarita, "affidabilita": g.affidabilita, "integrita": g.integrita,
-        "rigori": g.rigori, "piazzati": g.piazzati, "formazione": g.formazione, 
-        "dettaglio_ruolo": g.dettaglio_ruolo, "descrizione": g.descrizione,
         "ultimi_rilanci": [{"squadra": "Base d'asta", "prezzo": 1}],
         "squadra_in_vantaggio": "Nessuna (Base d'asta)"
     })

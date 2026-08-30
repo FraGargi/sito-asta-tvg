@@ -26,52 +26,53 @@
         </div>
     </div>
 
-    <!-- MODALE CATALOGO -->
+    <!-- MODALE LISTONE & SEGNATI (WISHLIST) -->
     <div id="modal-catalogo" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
-        <div class="bg-gray-900 border border-blue-600 rounded-2xl p-4 flex flex-col max-h-[92vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
+        <div class="bg-gray-900 border border-blue-600 rounded-2xl p-4 flex flex-col max-h-[92vh] overflow-hidden shadow-2xl w-full max-w-lg mx-auto">
             <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
                 <div class="flex gap-2">
-                    <button onclick="cambiaTabCatalogo('giocatori')" id="tab-btn-giocatori" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow">📚 Giocatori</button>
-                    <button onclick="cambiaTabCatalogo('squadre')" id="tab-btn-squadre" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400">🏟️ Squadre Serie A</button>
+                    <button onclick="cambiaTabHub('listone')" id="tab-btn-listone" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow">📚 Listone Completo</button>
+                    <button onclick="cambiaTabHub('segnati')" id="tab-btn-segnati" class="text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400">⭐ I Miei Segnati (<span id="count-segnati">0</span>)</button>
                 </div>
                 <button onclick="toggleModalCatalogo()" class="text-gray-400 font-bold text-base px-2">✕</button>
             </div>
             
-            <div id="tab-content-giocatori" class="flex flex-col flex-1 overflow-hidden space-y-2">
+            <!-- TAB 1: LISTONE COMPLETO -->
+            <div id="tab-content-listone" class="flex flex-col flex-1 overflow-hidden space-y-2">
                 <div class="grid grid-cols-5 gap-1">
-                    <button onclick="impostaFiltroCatalogoRuolo('')" id="cat-ruolo-tutti" class="bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase">Tutti</button>
-                    <button onclick="impostaFiltroCatalogoRuolo('P')" id="cat-ruolo-P" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">P</button>
-                    <button onclick="impostaFiltroCatalogoRuolo('D')" id="cat-ruolo-D" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">D</button>
-                    <button onclick="impostaFiltroCatalogoRuolo('C')" id="cat-ruolo-C" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">C</button>
-                    <button onclick="impostaFiltroCatalogoRuolo('A')" id="cat-ruolo-A" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">A</button>
+                    <button onclick="impostaFiltroHubRuolo('')" id="hub-ruolo-tutti" class="bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase">Tutti</button>
+                    <button onclick="impostaFiltroHubRuolo('P')" id="hub-ruolo-P" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">P</button>
+                    <button onclick="impostaFiltroHubRuolo('D')" id="hub-ruolo-D" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">D</button>
+                    <button onclick="impostaFiltroHubRuolo('C')" id="hub-ruolo-C" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">C</button>
+                    <button onclick="impostaFiltroHubRuolo('A')" id="hub-ruolo-A" class="bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase">A</button>
                 </div>
-                <input type="text" id="input-ricerca-catalogo" oninput="renderCatalogoGiocatori()" placeholder="Cerca nome o squadra..." class="w-full bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white">
-                <div id="lista-catalogo-container" class="flex-1 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar"></div>
+                
+                <!-- FILTRO SQUADRA E TESTO -->
+                <div class="flex gap-1.5">
+                    <select id="hub-filtro-squadra" onchange="renderHubListone()" class="w-1/3 bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white outline-none">
+                        <option value="">Tutte le Squadre</option>
+                    </select>
+                    <input type="text" id="input-ricerca-hub" oninput="renderHubListone()" placeholder="Cerca nome..." class="w-2/3 bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white">
+                </div>
+
+                <div id="lista-hub-container" class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
             </div>
 
-            <div id="tab-content-squadre" class="hidden flex flex-col flex-1 overflow-hidden space-y-2">
-                <input type="text" id="input-ricerca-squadre" oninput="renderCatalogoSquadre()" placeholder="Cerca squadra di Serie A..." class="w-full bg-gray-800 border border-gray-700 p-2.5 rounded-xl text-xs font-bold text-white">
-                <div id="lista-squadre-container" class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
+            <!-- TAB 2: I MIEI SEGNATI (WISHLIST REPARTO) -->
+            <div id="tab-content-segnati" class="hidden flex flex-col flex-1 overflow-hidden space-y-2">
+                <div class="text-[11px] text-gray-400 italic bg-gray-950 p-2 rounded-xl border border-gray-800">
+                    ⭐ Reparto personale: qui trovi tutti i giocatori che hai segnato, con i tuoi target di prezzo e note personali.
+                </div>
+                <div id="lista-segnati-container" class="flex-1 overflow-y-auto space-y-2 pr-1 custom-scrollbar"></div>
             </div>
         </div>
     </div>
 
-    <!-- MODALE SCHEDA SQUADRA SERIE A -->
-    <div id="modal-dettaglio-squadra" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
-        <div class="bg-gray-900 border border-indigo-600 rounded-2xl p-4 flex flex-col max-h-[90vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
-            <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
-                <h3 id="dettaglio-sq-titolo" class="font-black text-indigo-400 text-sm uppercase">🏟️ Scheda Squadra</h3>
-                <button onclick="chiudiDettaglioSquadra()" class="text-gray-400 font-bold text-base px-2">✕</button>
-            </div>
-            <div id="dettaglio-sq-contenuto" class="space-y-3 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs"></div>
-        </div>
-    </div>
-
-    <!-- MODALE DETTAGLIO GIOCATORE -->
+    <!-- MODALE DETTAGLIO GIOCATORE CON STATISTICHE 2025/26 -->
     <div id="modal-dettaglio-giocatore" class="hidden fixed inset-0 bg-black bg-opacity-95 z-50 flex flex-col p-4 justify-center">
         <div class="bg-gray-900 border border-cyan-600 rounded-2xl p-4 flex flex-col max-h-[85vh] overflow-hidden shadow-2xl w-full max-w-md mx-auto">
             <div class="flex justify-between items-center mb-3 border-b border-gray-800 pb-2">
-                <h3 class="font-black text-cyan-400 text-sm uppercase">🔍 Scheda Scouting</h3>
+                <h3 class="font-black text-cyan-400 text-sm uppercase">🔍 Scheda Statistiche Giocatore</h3>
                 <button onclick="chiudiDettaglioGiocatore()" class="text-gray-400 font-bold text-base px-2">✕</button>
             </div>
             <div id="dettaglio-contenuto" class="space-y-3 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs"></div>
@@ -85,9 +86,7 @@
                 <h3 class="font-black text-purple-400 text-sm uppercase">🛒 Registro Acquisti</h3>
                 <button onclick="toggleModalAcquisti()" class="text-gray-400 font-bold text-base px-2">✕</button>
             </div>
-            <div id="lista-acquisti-container" class="space-y-2 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs">
-                <!-- Popolato via JS -->
-            </div>
+            <div id="lista-acquisti-container" class="space-y-2 overflow-y-auto custom-scrollbar pr-1 flex-1 text-xs"></div>
         </div>
     </div>
 
@@ -99,7 +98,9 @@
         </div>
         <div class="flex gap-1.5">
             <button onclick="toggleModalAcquisti()" class="text-[10px] bg-purple-900 hover:bg-purple-800 px-2.5 py-1 rounded-lg text-white font-bold border border-purple-700 shadow">🛒 Acquisti</button>
-            <button onclick="toggleModalCatalogo()" class="text-[10px] bg-indigo-900 hover:bg-indigo-800 px-2.5 py-1 rounded-lg text-white font-bold border border-indigo-700 shadow">📚 Lista</button>
+            <button onclick="toggleModalCatalogo()" class="text-[10px] bg-indigo-900 hover:bg-indigo-800 px-2.5 py-1 rounded-lg text-white font-bold border border-indigo-700 shadow relative">
+                📋 Listone & Segnati <span id="badge-segnati-nav" class="hidden absolute -top-1 -right-1 bg-amber-500 text-black text-[9px] font-black px-1 rounded-full">0</span>
+            </button>
             <button onclick="cambiaSquadra()" class="text-[10px] bg-gray-800 hover:bg-gray-700 px-2 py-1 rounded-lg text-gray-300 font-bold border border-gray-700 shadow">Cambia</button>
         </div>
     </div>
@@ -113,18 +114,16 @@
                 <div class="text-sm font-bold text-gray-400">In attesa che l'Admin metta un giocatore all'asta...</div>
             </div>
 
+            <!-- BANNER NOTIFICA WISHLIST -->
+            <div id="banner-notifica-segnato" class="hidden w-full max-w-md bg-amber-500 text-black p-3 rounded-2xl font-black text-xs uppercase tracking-wider mb-2 shadow-xl animate-bounce flex items-center justify-center gap-2 border-2 border-yellow-300">
+                <span class="text-lg">⭐</span> ATTENZIONE: GIOCATORE NEI TUOI SEGNATI!
+            </div>
+
             <div id="box-giocatore-attivo" class="hidden w-full max-w-md space-y-2.5">
                 <div class="bg-gray-900 border-2 border-blue-600 rounded-2xl p-3 shadow-2xl relative overflow-hidden">
                     <div class="absolute top-2 right-3 text-xs font-mono font-bold text-yellow-400 bg-yellow-950 px-2 py-0.5 rounded" id="user-fvm">FVM: 0</div>
                     <div id="user-ruolo-nome" class="text-2xl font-black uppercase tracking-wide mb-0.5"></div>
-                    <div id="user-squadra-seriea" class="text-[11px] font-bold text-blue-400 uppercase tracking-widest mb-1"></div>
-                    <div class="bg-gray-950 border border-emerald-800 rounded-xl p-1.5 mb-1.5 text-center">
-                        <div id="user-formazione" class="text-[11px] font-black text-amber-300"></div>
-                        <div id="user-ballottaggio-live"></div>
-                    </div>
-                    <div class="text-[11px] text-gray-300 italic bg-gray-950 p-2 rounded-xl border border-gray-800 text-left">
-                        📝 <span id="user-descrizione"></span>
-                    </div>
+                    <div id="user-squadra-seriea" class="text-[11px] font-bold text-blue-400 uppercase tracking-widest"></div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
@@ -179,9 +178,28 @@
         let countdownInterval;
         let incrementoScelto = 1;
         let catalogoGiocatoriCache = [];
-        let infoSquadreCache = {};
-        let filtroCatalogoRuolo = '';
+        let filtroHubRuolo = '';
         let laMiaSquadraData = null;
+
+        let myWatchlist = JSON.parse(localStorage.getItem('fanta_watchlist') || '{}');
+
+        function saveWatchlist() {
+            localStorage.setItem('fanta_watchlist', JSON.stringify(myWatchlist));
+            updateBadgeSegnati();
+        }
+
+        function updateBadgeSegnati() {
+            const count = Object.values(myWatchlist).filter(w => w.segnato).length;
+            const badge = document.getElementById('badge-segnati-nav');
+            const countSpan = document.getElementById('count-segnati');
+            if (count > 0) {
+                badge.innerText = count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+            if (countSpan) countSpan.innerText = count;
+        }
 
         function getColorRuolo(ruolo) {
             if(ruolo === 'P') return 'text-yellow-400'; 
@@ -251,58 +269,96 @@
         function toggleModalCatalogo() {
             const modal = document.getElementById('modal-catalogo');
             modal.classList.toggle('hidden');
-            if (!modal.classList.contains('hidden')) { scaricaCatalogo(); }
-        }
-
-        function cambiaTabCatalogo(tab) {
-            const btnGiocatori = document.getElementById('tab-btn-giocatori');
-            const btnSquadre = document.getElementById('tab-btn-squadre');
-            const contentGiocatori = document.getElementById('tab-content-giocatori');
-            const contentSquadre = document.getElementById('tab-content-squadre');
-
-            if (tab === 'giocatori') {
-                btnGiocatori.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow";
-                btnSquadre.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400";
-                contentGiocatori.classList.remove('hidden');
-                contentSquadre.classList.add('hidden');
-            } else {
-                btnSquadre.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow";
-                btnGiocatori.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400";
-                contentSquadre.classList.remove('hidden');
-                contentGiocatori.classList.add('hidden');
-                renderCatalogoSquadre();
+            if (!modal.classList.contains('hidden')) { 
+                scaricaHubData(); 
             }
         }
 
-        function impostaFiltroCatalogoRuolo(ruolo) {
-            filtroCatalogoRuolo = ruolo;
+        function cambiaTabHub(tab) {
+            const btnListone = document.getElementById('tab-btn-listone');
+            const btnSegnati = document.getElementById('tab-btn-segnati');
+            const contentListone = document.getElementById('tab-content-listone');
+            const contentSegnati = document.getElementById('tab-content-segnati');
+
+            [btnListone, btnSegnati].forEach(b => b.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-gray-800 text-gray-400");
+            [contentListone, contentSegnati].forEach(c => c.classList.add('hidden'));
+
+            if (tab === 'listone') {
+                btnListone.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-blue-600 text-white shadow";
+                contentListone.classList.remove('hidden');
+                renderHubListone();
+            } else {
+                btnSegnati.className = "text-xs font-black uppercase px-3 py-1.5 rounded-lg bg-amber-600 text-black font-black shadow";
+                contentSegnati.classList.remove('hidden');
+                renderHubSegnati();
+            }
+        }
+
+        function impostaFiltroHubRuolo(ruolo) {
+            filtroHubRuolo = ruolo;
             ['', 'P', 'D', 'C', 'A'].forEach(r => {
-                const btn = document.getElementById(`cat-ruolo-${r === '' ? 'tutti' : r}`);
+                const btn = document.getElementById(`hub-ruolo-${r === '' ? 'tutti' : r}`);
                 if (r === ruolo) btn.className = "bg-blue-600 text-white font-bold py-1.5 rounded-lg text-xs uppercase shadow";
                 else btn.className = "bg-gray-800 text-gray-300 font-bold py-1.5 rounded-lg text-xs uppercase shadow";
             });
-            renderCatalogoGiocatori();
+            renderHubListone();
         }
 
-        async function scaricaCatalogo() {
+        async function scaricaHubData() {
             try {
                 const resG = await fetch('/api/lista_giocatori');
                 catalogoGiocatoriCache = await resG.json();
                 catalogoGiocatoriCache.sort((a, b) => a.nome.localeCompare(b.nome));
-                const resS = await fetch('/api/info_squadre_serie_a');
-                infoSquadreCache = await resS.json();
-                renderCatalogoGiocatori();
+
+                // Popola il menu a tendina delle squadre
+                const selSquadre = document.getElementById('hub-filtro-squadra');
+                if (selSquadre && selSquadre.options.length === 1) {
+                    const squadreSet = new Set(catalogoGiocatoriCache.map(g => g.squadra_serie_a));
+                    Array.from(squadreSet).sort().forEach(sq => {
+                        if (sq && sq !== 'Sconosciuta') selSquadre.add(new Option(sq, sq));
+                    });
+                }
+
+                updateBadgeSegnati();
+                renderHubListone();
             } catch (e) {}
         }
 
-        function renderCatalogoGiocatori() {
-            const query = document.getElementById('input-ricerca-catalogo').value.toLowerCase();
-            const container = document.getElementById('lista-catalogo-container');
+        function toggleSegnaGiocatore(id) {
+            if (!myWatchlist[id]) {
+                myWatchlist[id] = { segnato: true, target: '', note: '' };
+            } else {
+                myWatchlist[id].segnato = !myWatchlist[id].segnato;
+            }
+            saveWatchlist();
+            renderHubListone();
+            if (!document.getElementById('tab-content-segnati').classList.contains('hidden')) {
+                renderHubSegnati();
+            }
+        }
+
+        function aggiornaNotaGiocatore(id, val) {
+            if (!myWatchlist[id]) myWatchlist[id] = { segnato: false, target: '', note: '' };
+            myWatchlist[id].note = val;
+            saveWatchlist();
+        }
+
+        function aggiornaTargetGiocatore(id, val) {
+            if (!myWatchlist[id]) myWatchlist[id] = { segnato: false, target: '', note: '' };
+            myWatchlist[id].target = val;
+            saveWatchlist();
+        }
+
+        function renderHubListone() {
+            const query = document.getElementById('input-ricerca-hub').value.toLowerCase();
+            const filtroSquadra = document.getElementById('hub-filtro-squadra').value;
+            const container = document.getElementById('lista-hub-container');
 
             const filtrati = catalogoGiocatoriCache.filter(g => {
-                const matchRuolo = (filtroCatalogoRuolo === '' || g.ruolo === filtroCatalogoRuolo);
-                const matchQuery = g.nome.toLowerCase().includes(query) || g.squadra_serie_a.toLowerCase().includes(query);
-                return matchRuolo && matchQuery;
+                const matchRuolo = (filtroHubRuolo === '' || g.ruolo === filtroHubRuolo);
+                const matchSquadra = (filtroSquadra === '' || g.squadra_serie_a === filtroSquadra);
+                const matchQuery = g.nome.toLowerCase().includes(query);
+                return matchRuolo && matchSquadra && matchQuery;
             });
 
             if (filtrati.length === 0) {
@@ -311,122 +367,87 @@
             }
 
             container.innerHTML = filtrati.map(g => {
+                const w = myWatchlist[g.id] || { segnato: false, target: '', note: '' };
+                const isSegnato = w.segnato;
+                const starClass = isSegnato 
+                    ? 'text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.8)] scale-125' 
+                    : 'text-gray-600 opacity-50 hover:opacity-100 hover:scale-110';
+
                 const asisBadge = g.squadra_proprietaria 
-                    ? `<span class="text-[10px] bg-red-950 text-red-300 px-2 py-0.5 rounded font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` 
-                    : `<span class="text-[10px] bg-emerald-950 text-emerald-300 px-2 py-0.5 rounded font-bold">SVINCOLATO (FVM: ${g.fvm})</span>`;
+                    ? `<span class="text-[9px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` 
+                    : `<span class="text-[9px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded font-bold">SVINCOLATO (FVM: ${g.fvm})</span>`;
                 
                 return `
-                    <div onclick="apriDettaglioGiocatore(${g.id})" class="bg-gray-950 p-2.5 rounded-xl border border-gray-800 flex justify-between items-center text-xs cursor-pointer hover:bg-gray-900 transition-colors">
-                        <div>
-                            <span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> 
-                            <span class="font-bold text-white ml-1">${g.nome}</span>
-                            <div class="text-[10px] text-gray-400 mt-0.5">${g.squadra_serie_a} - Titolarità: ${g.titolarita || '-'}</div>
+                    <div class="bg-gray-950 p-2.5 rounded-xl border border-gray-800 space-y-2 text-xs">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleSegnaGiocatore(${g.id})" class="text-base font-bold transition-all duration-200 ${starClass}" title="Aggiungi/Rimuovi dai Segnati">⭐</button>
+                                <span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> 
+                                <span class="font-bold text-white cursor-pointer hover:underline" onclick="apriDettaglioGiocatore(${g.id})">${g.nome}</span>
+                                <span class="text-[10px] text-gray-400">(${g.squadra_serie_a})</span>
+                            </div>
+                            <div>${asisBadge}</div>
                         </div>
-                        <div>${asisBadge}</div>
+                        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-gray-900">
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-gray-400 font-bold shrink-0">🎯 Target cr:</span>
+                                <input type="number" value="${w.target}" oninput="aggiornaTargetGiocatore(${g.id}, this.value)" placeholder="Es. 15" class="w-full bg-gray-900 border border-gray-700 px-2 py-1 rounded text-xs font-mono font-bold text-green-400 text-center outline-none focus:border-green-500">
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-gray-400 font-bold shrink-0">📝 Note:</span>
+                                <input type="text" value="${w.note}" oninput="aggiornaNotaGiocatore(${g.id}, this.value)" placeholder="Le tue note..." class="w-full bg-gray-900 border border-gray-700 px-2 py-1 rounded text-xs text-white outline-none focus:border-blue-500">
+                            </div>
+                        </div>
                     </div>
                 `;
             }).join('');
         }
 
-        function renderCatalogoSquadre() {
-            const query = document.getElementById('input-ricerca-squadre').value.toLowerCase();
-            const container = document.getElementById('lista-squadre-container');
-            const squadreMap = {};
-            catalogoGiocatoriCache.forEach(g => {
-                const sq = g.squadra_serie_a || "Sconosciuta";
-                if (!squadreMap[sq]) squadreMap[sq] = [];
-                squadreMap[sq].push(g);
-            });
-            const squadreNomi = Object.keys(squadreMap).sort().filter(sq => sq.toLowerCase().includes(query));
+        function renderHubSegnati() {
+            const container = document.getElementById('lista-segnati-container');
+            const segnatiIds = Object.keys(myWatchlist).filter(id => myWatchlist[id].segnato);
+            const segnatiGiocatori = catalogoGiocatoriCache.filter(g => segnatiIds.includes(String(g.id)));
 
-            if (squadreNomi.length === 0) {
-                container.innerHTML = '<div class="text-xs text-gray-500 text-center py-6 italic">Nessuna squadra trovata</div>';
+            if (segnatiGiocatori.length === 0) {
+                container.innerHTML = '<div class="text-xs text-gray-500 text-center py-8 italic">Non hai ancora segnato nessun giocatore.<br>Clicca sulla stellina ⭐ nel listone per aggiungerli qui!</div>';
                 return;
             }
 
-            container.innerHTML = squadreNomi.map(sq => {
-                const infoSq = infoSquadreCache[sq] || {};
+            container.innerHTML = segnatiGiocatori.map(g => {
+                const w = myWatchlist[g.id] || { target: '', note: '' };
+                const asisBadge = g.squadra_proprietaria 
+                    ? `<span class="text-[9px] bg-red-950 text-red-300 px-1.5 py-0.5 rounded font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` 
+                    : `<span class="text-[9px] bg-emerald-950 text-emerald-300 px-1.5 py-0.5 rounded font-bold">SVINCOLATO (FVM: ${g.fvm})</span>`;
+                
                 return `
-                    <div onclick="apriDettaglioSquadra('${sq}')" class="bg-gray-950 border border-gray-800 rounded-xl p-3 flex justify-between items-center cursor-pointer hover:bg-gray-900 transition-colors">
-                        <div>
-                            <h4 class="font-black text-blue-400 text-sm uppercase">🏟️ ${sq}</h4>
-                            <div class="text-[11px] text-gray-400 mt-0.5">Modulo: <strong class="text-amber-300">${infoSq.modulo || '-'}</strong></div>
+                    <div class="bg-gray-950 p-2.5 rounded-xl border border-amber-800/60 space-y-2 text-xs shadow-md">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <button onclick="toggleSegnaGiocatore(${g.id})" class="text-base font-bold text-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.8)] scale-125 transition-transform" title="Rimuovi dai Segnati">⭐</button>
+                                <span class="font-black ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> 
+                                <span class="font-bold text-white cursor-pointer hover:underline" onclick="apriDettaglioGiocatore(${g.id})">${g.nome}</span>
+                                <span class="text-[10px] text-gray-400">(${g.squadra_serie_a})</span>
+                            </div>
+                            <div>${asisBadge}</div>
                         </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-indigo-950 text-indigo-300 px-2.5 py-1 rounded-lg font-bold">Visualizza Tattica ➔</span>
+                        <div class="grid grid-cols-2 gap-2 pt-1 border-t border-gray-900">
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-gray-400 font-bold shrink-0">🎯 Target cr:</span>
+                                <input type="number" value="${w.target}" oninput="aggiornaTargetGiocatore(${g.id}, this.value)" placeholder="Es. 15" class="w-full bg-gray-900 border border-gray-700 px-2 py-1 rounded text-xs font-mono font-bold text-green-400 text-center outline-none focus:border-green-500">
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <span class="text-[10px] text-gray-400 font-bold shrink-0">📝 Note:</span>
+                                <input type="text" value="${w.note}" oninput="aggiornaNotaGiocatore(${g.id}, this.value)" placeholder="Le tue note..." class="w-full bg-gray-900 border border-gray-700 px-2 py-1 rounded text-xs text-white outline-none focus:border-blue-500">
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
-        }
-
-        function apriDettaglioSquadra(nomeSquadra) {
-            const info = infoSquadreCache[nomeSquadra] || { modulo: '-', formazione_tipo: '-', rigoristi: '-', piazzati: '-', ballottaggi: '-' };
-            const giocatoriSq = catalogoGiocatoriCache.filter(g => g.squadra_serie_a === nomeSquadra);
-            giocatoriSq.sort((a, b) => b.fvm - a.fvm);
-
-            const giocatoriHtml = giocatoriSq.map(g => {
-                const stato = g.squadra_proprietaria ? `<span class="text-red-400 font-bold">${g.squadra_proprietaria} (${g.costo}cr)</span>` : `<span class="text-green-400">Svincolato</span>`;
-                return `
-                    <div onclick="apriDettaglioGiocatore(${g.id})" class="flex justify-between items-center py-1.5 border-b border-gray-900 text-xs cursor-pointer hover:bg-gray-900 px-1 rounded">
-                        <div><span class="${getColorRuolo(g.ruolo)} font-black">[${g.ruolo}]</span> <span class="text-white font-bold ml-1">${g.nome}</span> <span class="text-[10px] text-yellow-400 ml-1">(${g.titolarita || '-'})</span></div>
-                        <div class="text-[10px]">FVM: ${g.fvm} | ${stato}</div>
-                    </div>
-                `;
-            }).join('');
-
-            document.getElementById('dettaglio-sq-titolo').innerText = `🏟️ ${nomeSquadra}`;
-            document.getElementById('dettaglio-sq-contenuto').innerHTML = `
-                <div class="bg-gray-950 p-3 rounded-xl border border-gray-800 space-y-3">
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
-                            <div class="text-[9px] text-gray-400 uppercase font-bold">Modulo</div>
-                            <div class="text-sm font-black text-amber-300">${info.modulo}</div>
-                        </div>
-                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
-                            <div class="text-[9px] text-gray-400 uppercase font-bold">Rigoristi</div>
-                            <div class="text-xs font-bold text-yellow-400">${info.rigoristi}</div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
-                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Formazione Tipo (11 Titolare)</div>
-                        <div class="text-xs font-bold text-cyan-300">${info.formazione_tipo}</div>
-                    </div>
-                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
-                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Battitori Piazzati (Punizioni / Angoli)</div>
-                        <div class="text-xs font-bold text-blue-300">${info.piazzati}</div>
-                    </div>
-                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800">
-                        <div class="text-[9px] text-gray-400 uppercase font-bold mb-0.5">Ballottaggi Chiave</div>
-                        <div class="text-xs font-bold text-rose-300">${info.ballottaggi}</div>
-                    </div>
-                    <div class="bg-gray-900 p-2.5 rounded border border-gray-800 space-y-1">
-                        <div class="text-[10px] font-black text-indigo-400 uppercase mb-1">Rosa Completa (${giocatoriSq.length} Giocatori)</div>
-                        <div class="max-h-48 overflow-y-auto custom-scrollbar space-y-0.5 pr-1">
-                            ${giocatoriHtml}
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modal-dettaglio-squadra').classList.remove('hidden');
-        }
-
-        function chiudiDettaglioSquadra() {
-            document.getElementById('modal-dettaglio-squadra').classList.add('hidden');
         }
 
         function apriDettaglioGiocatore(id) {
             const g = catalogoGiocatoriCache.find(x => x.id === id);
             if (!g) return;
-
-            let compagniBallottaggio = "";
-            const infoSq = infoSquadreCache[g.squadra_serie_a] || {};
-            if (infoSq.ballottaggi && infoSq.ballottaggi !== '-') {
-                const ballots = infoSq.ballottaggi.split('|');
-                const cognome = g.nome.trim().split(' ')[0].toUpperCase();
-                const match = ballots.find(b => b.toUpperCase().includes(cognome) || b.toUpperCase().includes(g.nome.toUpperCase()));
-                if (match) compagniBallottaggio = match.trim();
-            }
 
             const asisBadge = g.squadra_proprietaria 
                 ? `<span class="bg-red-950 text-red-300 px-2 py-1 rounded font-bold">Acquistato da: ${g.squadra_proprietaria} (${g.costo} cr.)</span>` 
@@ -443,34 +464,45 @@
                         <div>${asisBadge}</div>
                     </div>
 
-                    <div class="bg-gray-900 p-2.5 rounded-lg border border-emerald-800 text-center">
-                        <div class="text-[10px] font-bold text-cyan-300 uppercase mb-0.5">Gerarchia e Stato</div>
-                        <div class="text-xs font-black text-amber-300">${g.formazione || '-'}</div>
-                        ${compagniBallottaggio ? `<div class="mt-1.5 text-[11px] text-rose-300 font-bold bg-gray-950 p-1.5 rounded border border-rose-900 shadow-inner">🔄 Concorrenza: ${compagniBallottaggio}</div>` : ''}
-                    </div>
-
-                    <div class="bg-gray-900 p-2 rounded border border-gray-800 text-center">
-                        <div class="text-[10px] text-gray-400 uppercase font-bold">Quotazione Iniziale</div>
-                        <div class="text-sm font-bold text-white">${g.quotazione} cr.</div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-2 text-center">
-                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
-                            <div class="text-[9px] text-gray-400 uppercase">Titolarità</div>
-                            <div class="text-xs font-bold text-yellow-400">${g.titolarita}</div>
+                    <!-- STATISTICHE STAGIONE SCORSA (2025/26) -->
+                    <div class="bg-gray-900 p-2.5 rounded-lg border border-blue-900 space-y-1.5">
+                        <div class="text-[10px] font-black text-blue-400 uppercase text-center mb-1">📊 Statistiche Stagione 2025/26</div>
+                        <div class="grid grid-cols-4 gap-1.5 text-center">
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Presenze</div>
+                                <div class="text-xs font-mono font-bold text-white">${g.stat_pv || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Media Voto</div>
+                                <div class="text-xs font-mono font-bold text-yellow-300">${g.stat_mv || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Fanta Media</div>
+                                <div class="text-xs font-mono font-bold text-green-400">${g.stat_fm || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">${g.ruolo === 'P' ? 'Gol Subit' : 'Gol Fatti'}</div>
+                                <div class="text-xs font-mono font-bold text-cyan-300">${g.ruolo === 'P' ? (g.stat_gs || 0) : (g.stat_gf || 0)}</div>
+                            </div>
                         </div>
-                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
-                            <div class="text-[9px] text-gray-400 uppercase">Affidabilità</div>
-                            <div class="text-xs font-bold text-blue-300">${g.affidabilita}</div>
+                        <div class="grid grid-cols-4 gap-1.5 text-center mt-1">
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Assist</div>
+                                <div class="text-xs font-mono font-bold text-blue-300">${g.stat_ass || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Ammoniz.</div>
+                                <div class="text-xs font-mono font-bold text-amber-400">${g.stat_amm || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">Espulsioni</div>
+                                <div class="text-xs font-mono font-bold text-red-400">${g.stat_esp || 0}</div>
+                            </div>
+                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800">
+                                <div class="text-[9px] text-gray-400 uppercase font-bold">FVM</div>
+                                <div class="text-xs font-mono font-bold text-purple-300">${g.fvm}</div>
+                            </div>
                         </div>
-                        <div class="bg-gray-900 p-2 rounded border border-gray-800">
-                            <div class="text-[9px] text-gray-400 uppercase">Integrità</div>
-                            <div class="text-xs font-bold text-red-300">${g.integrita}</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-900 p-2.5 rounded-lg border border-gray-800 italic text-gray-200 text-[11px]">
-                        📝 ${g.descrizione && g.descrizione !== '-' ? g.descrizione : 'Nessuna nota di scouting disponibile.'}
                     </div>
                 </div>
             `;
@@ -502,6 +534,7 @@
                 const asta = await resLive.json();
                 const attesaEl = document.getElementById('stato-attesa');
                 const boxAttivoEl = document.getElementById('box-giocatore-attivo');
+                const bannerSegnatoEl = document.getElementById('banner-notifica-segnato');
                 const btnRilancio = document.getElementById('btn-rilancio-master');
 
                 if (myTeamId) {
@@ -535,22 +568,17 @@
                     attesaEl.classList.add('hidden');
                     boxAttivoEl.classList.remove('hidden');
 
+                    const isSegnatoLive = myWatchlist[asta.giocatore_id] && myWatchlist[asta.giocatore_id].segnato;
+                    if (isSegnatoLive) {
+                        bannerSegnatoEl.classList.remove('hidden');
+                    } else {
+                        bannerSegnatoEl.classList.add('hidden');
+                    }
+
                     document.getElementById('user-ruolo-nome').innerHTML = `<span class="${getColorRuolo(asta.ruolo)}">[${asta.ruolo}]</span> ${asta.nome}`;
                     document.getElementById('user-squadra-seriea').innerText = asta.squadra_serie_a;
                     document.getElementById('user-prezzo').innerText = `${asta.prezzo} cr.`;
                     document.getElementById('user-fvm').innerText = `FVM: ${asta.fvm}`;
-                    document.getElementById('user-descrizione').innerText = asta.descrizione && asta.descrizione !== '-' ? asta.descrizione : 'Nessuna nota.';
-                    document.getElementById('user-formazione').innerText = asta.formazione && asta.formazione !== '-' ? asta.formazione : '';
-
-                    let compagniBallottaggio = "";
-                    const infoSq = infoSquadreCache[asta.squadra_serie_a] || {};
-                    if (infoSq.ballottaggi && infoSq.ballottaggi !== '-') {
-                        const ballots = infoSq.ballottaggi.split('|');
-                        const cognome = asta.nome.trim().split(' ')[0].toUpperCase();
-                        const match = ballots.find(b => b.toUpperCase().includes(cognome) || b.toUpperCase().includes(asta.nome.toUpperCase()));
-                        if (match) compagniBallottaggio = match.trim();
-                    }
-                    document.getElementById('user-ballottaggio-live').innerHTML = compagniBallottaggio ? `<div class="mt-1.5 text-[10px] text-rose-300 font-bold bg-gray-900 p-1.5 rounded border border-rose-900">🔄 Concorrenza: ${compagniBallottaggio}</div>` : '';
 
                     const feedEl = document.getElementById('user-feed-rilanci');
                     if (asta.ultimi_rilanci && asta.ultimi_rilanci.length > 0) {
@@ -608,10 +636,12 @@
                 } else {
                     attesaEl.classList.remove('hidden');
                     boxAttivoEl.classList.add('hidden');
+                    bannerSegnatoEl.classList.add('hidden');
                 }
             } catch (e) {}
         }
 
+        updateBadgeSegnati();
         setInterval(aggiornaStatoUtente, 1000);
         aggiornaStatoUtente();
     </script>

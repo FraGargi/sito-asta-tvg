@@ -70,29 +70,14 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-6 items-stretch mx-auto w-full max-w-7xl">
-            <div class="bg-gray-900 border border-indigo-600 rounded-xl p-4 shadow-xl flex flex-col justify-center">
-                <div class="text-indigo-400 text-xs font-bold uppercase tracking-wider mb-1 text-center">📝 Scouting & Note Tattiche</div>
-                <div id="live-descrizione" class="text-xs text-gray-200 leading-relaxed italic text-center"></div>
-            </div>
-
-            <div class="bg-gray-900 border border-emerald-700 rounded-xl p-4 shadow-xl flex flex-col items-center justify-center text-center">
-                <div class="text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">⚽ Ruolo & Gerarchia</div>
-                <div id="live-ruolo-spec" class="text-[11px] font-bold text-cyan-300 uppercase tracking-wider mb-1"></div>
-                <div id="live-stato-container" class="w-full flex flex-col gap-1 items-center justify-center p-2 bg-emerald-950 border border-emerald-800 rounded-lg shadow-inner"></div>
-            </div>
-
-            <div class="bg-gray-900 border border-amber-600 rounded-xl p-3 shadow-xl flex flex-col justify-between">
-                <div class="text-amber-400 text-xs font-bold uppercase tracking-wider text-center mb-1">⚡ Ultimi Rilanci</div>
-                <div id="live-feed-rilanci" class="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-1 text-xs"></div>
+        <div class="mx-auto w-full max-w-3xl my-4">
+            <div class="bg-gray-900 border border-amber-600 rounded-xl p-4 shadow-xl flex flex-col justify-between">
+                <div class="text-amber-400 text-xs font-bold uppercase tracking-wider text-center mb-2">⚡ Ultimi Rilanci</div>
+                <div id="live-feed-rilanci" class="space-y-1.5 custom-scrollbar pr-1 text-xs max-h-48 overflow-y-auto"></div>
             </div>
         </div>
-
-        <div class="bg-gray-900 border border-blue-600 rounded-xl p-3 shadow-2xl grid grid-cols-3 text-center">
-            <div class="border-r border-gray-800"><div class="text-gray-400 text-xs uppercase mb-0.5">Titolarità</div><div id="live-tit" class="text-lg font-bold text-yellow-400"></div></div>
-            <div class="border-r border-gray-800"><div class="text-gray-400 text-xs uppercase mb-0.5">Affidabilità</div><div id="live-aff" class="text-lg font-bold text-blue-300"></div></div>
-            <div><div class="text-gray-400 text-xs uppercase mb-0.5">Integrità Fisica</div><div id="live-int" class="text-lg font-bold text-red-300"></div></div>
-        </div>
+        
+        <div></div>
     </div>
 
     <script>
@@ -102,7 +87,6 @@
         let giocatoSuonoFine = false;
         let ultimoPrezzoNotificato = null;
         let ultimoIdGiocatoreInAsta = null;
-        let infoSquadreCache = {};
 
         function playSound(type) {
             try {
@@ -143,25 +127,6 @@
             return 'text-white';
         }
 
-        function renderGerarchiaOrdinata(formazioneStr) {
-            if (!formazioneStr || formazioneStr === '-') return '<span class="text-gray-400 text-xs">Stato non definito</span>';
-            let stato = "ALTRO", dettaglio = formazioneStr;
-            if (formazioneStr.includes('|')) {
-                const parts = formazioneStr.split('|');
-                stato = parts[0].trim(); dettaglio = parts[1].trim();
-            } else if (formazioneStr.includes('Titolare') || formazioneStr.includes('TITOLARE')) { stato = "TITOLARE"; }
-            else if (formazioneStr.includes('Ballottaggio') || formazioneStr.includes('[')) { stato = "BALLOTTAGGIO"; }
-            else if (formazioneStr.includes('Riserva') || formazioneStr.includes('RISERVA')) { stato = "RISERVA"; }
-
-            let badgeStyle = "bg-blue-900 text-blue-200 border-blue-700";
-            if (stato === "TITOLARE") badgeStyle = "bg-emerald-800 text-emerald-200 border-emerald-600";
-            else if (stato === "BALLOTTAGGIO") badgeStyle = "bg-amber-800 text-amber-200 border-amber-600";
-            else if (stato === "RISERVA") badgeStyle = "bg-rose-900 text-rose-200 border-rose-700";
-
-            return `<span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider border ${badgeStyle}">${stato}</span>
-                    <span class="text-[11px] text-yellow-300 font-bold mt-0.5">${dettaglio}</span>`;
-        }
-
         setInterval(async function aggiornaLive() {
             try {
                 const resLive = await fetch('/api/live');
@@ -187,34 +152,11 @@
                     document.getElementById('live-squadra-vantaggio').innerText = asta.squadra_in_vantaggio || "Nessuna";
                     document.getElementById('live-prezzo').innerText = `${asta.prezzo} cr.`;
                     document.getElementById('live-fvm').innerText = asta.fvm;
-                    
-                    document.getElementById('live-tit').innerText = asta.titolarita;
-                    document.getElementById('live-aff').innerText = asta.affidabilita;
-                    document.getElementById('live-int').innerText = asta.integrita;
-                    
-                    document.getElementById('live-descrizione').innerText = asta.descrizione && asta.descrizione !== '-' ? asta.descrizione : 'Nessuna nota.';
-                    document.getElementById('live-ruolo-spec').innerText = asta.dettaglio_ruolo && asta.dettaglio_ruolo !== '-' ? `Ruolo: ${asta.dettaglio_ruolo}` : '';
-
-                    // Calcolo della concorrenza
-                    let compagniBallottaggio = "";
-                    const infoSq = infoSquadreCache[asta.squadra_serie_a] || {};
-                    if (infoSq.ballottaggi && infoSq.ballottaggi !== '-') {
-                        const ballots = infoSq.ballottaggi.split('|');
-                        const cognome = asta.nome.trim().split(' ')[0].toUpperCase();
-                        const match = ballots.find(b => b.toUpperCase().includes(cognome) || b.toUpperCase().includes(asta.nome.toUpperCase()));
-                        if (match) compagniBallottaggio = match.trim();
-                    }
-
-                    let statoHtml = renderGerarchiaOrdinata(asta.formazione);
-                    if (compagniBallottaggio) {
-                        statoHtml += `<div class="mt-1.5 w-full text-[11px] text-rose-300 font-bold bg-gray-950 p-1.5 rounded border border-rose-900 shadow-inner">🔄 Concorrenza: ${compagniBallottaggio}</div>`;
-                    }
-                    document.getElementById('live-stato-container').innerHTML = statoHtml;
 
                     const feedEl = document.getElementById('live-feed-rilanci');
                     if (asta.ultimi_rilanci && asta.ultimi_rilanci.length > 0) {
                         feedEl.innerHTML = asta.ultimi_rilanci.map(r => `
-                            <div class="bg-gray-950 p-1.5 rounded border border-gray-800 flex justify-between items-center">
+                            <div class="bg-gray-950 p-2 rounded border border-gray-800 flex justify-between items-center text-sm">
                                 <span class="text-blue-300 font-bold truncate">${r.squadra}</span>
                                 <span class="text-green-400 font-mono font-bold">${r.prezzo} cr.</span>
                             </div>
@@ -258,10 +200,6 @@
 
         async function aggiornaDatiPesanti() {
             try {
-                // Scarica le info squadre per calcolare i ballottaggi sulla TV
-                const resS = await fetch('/api/info_squadre_serie_a');
-                infoSquadreCache = await resS.json();
-
                 const resSquadre = await fetch('/api/stato_squadre');
                 const squadre = await resSquadre.json();
                 document.getElementById('griglia-squadre').innerHTML = squadre.map(s => {
