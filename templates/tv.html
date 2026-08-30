@@ -70,10 +70,50 @@
             </div>
         </div>
 
-        <div class="mx-auto w-full max-w-3xl my-4">
-            <div class="bg-gray-900 border border-amber-600 rounded-xl p-4 shadow-xl flex flex-col justify-between">
+        <div class="mx-auto w-full max-w-6xl my-4 grid grid-cols-2 gap-4">
+            <!-- Blocco Statistiche -->
+            <div class="bg-gray-900 border border-blue-900 rounded-xl p-4 shadow-xl flex flex-col justify-center">
+                <div class="text-blue-400 text-xs font-bold uppercase tracking-wider text-center mb-3">📊 Statistiche Stagione 2025/26</div>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Presenze</div>
+                        <div class="text-sm font-mono font-bold text-white" id="live-stat-pv">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Media Voto</div>
+                        <div class="text-sm font-mono font-bold text-yellow-300" id="live-stat-mv">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Fanta Media</div>
+                        <div class="text-sm font-mono font-bold text-green-400" id="live-stat-fm">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold" id="live-stat-gol-label">Gol</div>
+                        <div class="text-sm font-mono font-bold text-cyan-300" id="live-stat-gol">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Assist</div>
+                        <div class="text-sm font-mono font-bold text-blue-300" id="live-stat-ass">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Ammoniz.</div>
+                        <div class="text-sm font-mono font-bold text-amber-400" id="live-stat-amm">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">Espulsioni</div>
+                        <div class="text-sm font-mono font-bold text-red-400" id="live-stat-esp">0</div>
+                    </div>
+                    <div class="bg-gray-950 p-2 rounded border border-gray-800">
+                        <div class="text-[10px] text-gray-400 uppercase font-bold">FVM</div>
+                        <div class="text-sm font-mono font-bold text-purple-300" id="live-stat-fvm">0</div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Blocco Rilanci -->
+            <div class="bg-gray-900 border border-amber-600 rounded-xl p-4 shadow-xl flex flex-col">
                 <div class="text-amber-400 text-xs font-bold uppercase tracking-wider text-center mb-2">⚡ Ultimi Rilanci</div>
-                <div id="live-feed-rilanci" class="space-y-1.5 custom-scrollbar pr-1 text-xs max-h-48 overflow-y-auto"></div>
+                <div id="live-feed-rilanci" class="space-y-1.5 custom-scrollbar pr-1 text-xs flex-1 overflow-y-auto max-h-48"></div>
             </div>
         </div>
         
@@ -152,6 +192,17 @@
                     document.getElementById('live-squadra-vantaggio').innerText = asta.squadra_in_vantaggio || "Nessuna";
                     document.getElementById('live-prezzo').innerText = `${asta.prezzo} cr.`;
                     document.getElementById('live-fvm').innerText = asta.fvm;
+
+                    // Popolamento statistiche
+                    document.getElementById('live-stat-pv').innerText = asta.stat_pv || 0;
+                    document.getElementById('live-stat-mv').innerText = asta.stat_mv || 0;
+                    document.getElementById('live-stat-fm').innerText = asta.stat_fm || 0;
+                    document.getElementById('live-stat-gol-label').innerText = asta.ruolo === 'P' ? 'Gol Subiti' : 'Gol Fatti';
+                    document.getElementById('live-stat-gol').innerText = asta.ruolo === 'P' ? (asta.stat_gs || 0) : (asta.stat_gf || 0);
+                    document.getElementById('live-stat-ass').innerText = asta.stat_ass || 0;
+                    document.getElementById('live-stat-amm').innerText = asta.stat_amm || 0;
+                    document.getElementById('live-stat-esp').innerText = asta.stat_esp || 0;
+                    document.getElementById('live-stat-fvm').innerText = asta.fvm;
 
                     const feedEl = document.getElementById('live-feed-rilanci');
                     if (asta.ultimi_rilanci && asta.ultimi_rilanci.length > 0) {

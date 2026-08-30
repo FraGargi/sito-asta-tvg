@@ -193,7 +193,11 @@ def gestisci_live(dati: UpdateLive, db: Session = Depends(get_db)):
                 "attiva": True, "giocatore_id": g.id, "nome": g.nome, "ruolo": g.ruolo, "squadra_serie_a": g.squadra_serie_a, 
                 "prezzo": 1, "fine_timer": int(time.time()) + 10, "fvm": g.fvm, 
                 "ultimi_rilanci": [{"squadra": "Base d'asta", "prezzo": 1}],
-                "squadra_in_vantaggio": "Nessuna (Base d'asta)"
+                "squadra_in_vantaggio": "Nessuna (Base d'asta)",
+                # Aggiunta statistiche per la TV
+                "stat_pv": g.stat_pv, "stat_mv": g.stat_mv, "stat_fm": g.stat_fm,
+                "stat_gf": g.stat_gf, "stat_gs": g.stat_gs, "stat_ass": g.stat_ass,
+                "stat_amm": g.stat_amm, "stat_esp": g.stat_esp
             })
     elif dati.azione == "aggiorna" and dati.prezzo is not None:
         stato_asta["prezzo"] = dati.prezzo
