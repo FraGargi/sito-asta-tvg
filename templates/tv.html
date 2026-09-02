@@ -28,7 +28,7 @@
                 <div id="lista-acquisti" class="space-y-2 flex-1 overflow-y-auto custom-scrollbar pr-1"></div>
             </div>
             <div class="flex-1 bg-gray-800 p-3 rounded-lg border border-blue-900 flex flex-col overflow-hidden">
-                <h3 class="text-base font-bold mb-2 text-blue-400">🔥 Top Svincolati (FVM)</h3>
+                <h3 id="titolo-svincolati" class="text-base font-bold mb-2 text-blue-400">🔥 Top Svincolati (FVM)</h3>
                 <div id="lista-svincolati" class="space-y-2 flex-1 overflow-y-auto custom-scrollbar pr-1"></div>
             </div>
         </div>
@@ -127,6 +127,7 @@
         let giocatoSuonoFine = false;
         let ultimoPrezzoNotificato = null;
         let ultimoIdGiocatoreInAsta = null;
+        let ultimoRuoloChiamato = '';
 
         function playSound(type) {
             try {
@@ -176,6 +177,7 @@
                 
                 if (asta.attiva) {
                     modalLive.classList.remove('hidden');
+                    if (asta.ruolo) ultimoRuoloChiamato = asta.ruolo;
 
                     if (asta.giocatore_id !== ultimoIdGiocatoreInAsta) {
                         ultimoIdGiocatoreInAsta = asta.giocatore_id;
@@ -296,8 +298,17 @@
                         <span class="text-green-400 font-bold text-sm">${a.costo} cr.</span>
                     </div>`).join('');
                 
-                const resSvincolati = await fetch('/api/top_svincolati');
+                const urlSvincolati = ultimoRuoloChiamato ? `/api/top_svincolati?ruolo=${ultimoRuoloChiamato}` : '/api/top_svincolati';
+                const resSvincolati = await fetch(urlSvincolati);
                 const svincolati = await resSvincolati.json();
+                
+                const titoloEl = document.getElementById('titolo-svincolati');
+                if (titoloEl) {
+                    titoloEl.innerHTML = ultimoRuoloChiamato 
+                        ? `🔥 Top Svincolati <span class="${getColorRuolo(ultimoRuoloChiamato)} font-black">[${ultimoRuoloChiamato}]</span>`
+                        : `🔥 Top Svincolati (FVM)`;
+                }
+
                 document.getElementById('lista-svincolati').innerHTML = svincolati.slice(0, 4).map(g => `
                     <div class="bg-gray-900 p-2 rounded text-xs border border-blue-900 flex justify-between items-center">
                         <div><span class="font-bold ${getColorRuolo(g.ruolo)}">[${g.ruolo}]</span> <span class="text-gray-300">${g.nome}</span></div>

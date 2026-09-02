@@ -21,7 +21,7 @@ class Squadra(Base):
     nome = Column(String, unique=True, index=True)
     budget_iniziale = Column(Integer, default=500)
     watchlist = Column(String, default="{}") 
-    password = Column(String, default="") # Nuovo campo per la sicurezza
+    password = Column(String, default="") 
 
 class Giocatore(Base):
     __tablename__ = "giocatori"
@@ -340,8 +340,11 @@ def ultimi_acquisti(db: Session = Depends(get_db)):
     return [{"id": g.id, "nome": g.nome, "ruolo": g.ruolo, "costo": g.costo, "squadra": squadre.get(g.squadra_id, "Sconosciuta")} for g in giocatori]
 
 @app.get("/api/top_svincolati")
-def top_svincolati(db: Session = Depends(get_db)):
-    liberi = db.query(Giocatore).filter(Giocatore.squadra_id == None).all()
+def top_svincolati(ruolo: Optional[str] = None, db: Session = Depends(get_db)):
+    query = db.query(Giocatore).filter(Giocatore.squadra_id == None)
+    if ruolo and ruolo.strip().upper() in ["P", "D", "C", "A"]:
+        query = query.filter(Giocatore.ruolo == ruolo.strip().upper())
+    liberi = query.all()
     def get_fvm(g):
         try: return float(str(g.fvm).replace(",", "."))
         except: return 0.0
